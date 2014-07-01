@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  profile_pic: MyString
+  district: MyString
+  state: MyString
+  party: MyString
+  voting_attendance: 1
+  money_raised: 1
+  efficiency: 1
+  sponsorship_id: 1
+
+two:
+  name: MyString
+  profile_pic: MyString
+  district: MyString
+  state: MyString
+  party: MyString
+  voting_attendance: 1
+  money_raised: 1
+  efficiency: 1
+  sponsorship_id: 1
