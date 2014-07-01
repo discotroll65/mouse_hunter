@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  politician_id: 1
+  donor_id: 1
+  money_given: 1
+  campaign_cycle: MyString
+
+two:
+  politician_id: 1
+  donor_id: 1
+  money_given: 1
+  campaign_cycle: MyString
