@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  resources :bills, only: [:index, :show]
+  resources :sponsorships, only: [:index, :show]
+  resources :politicians, only: [:index]
+  resources :pvotes, only: [:index]
+  resources :donors, only: [:index]
+  resources :lobbies, only: [:index]
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
