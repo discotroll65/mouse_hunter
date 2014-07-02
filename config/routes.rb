@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # resources :bills, only: [:index, :show]
   # resources :sponsorships, only: [:index, :show]
-  resources :politicians, only: [:index]
+  resources :politicians, only: [:index, :show]
   # resources :pvotes, only: [:index]
   # resources :donors, only: [:index]
   # resources :lobbies, only: [:index]
