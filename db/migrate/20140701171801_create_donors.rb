@@ -3,7 +3,7 @@ class CreateDonors < ActiveRecord::Migration
     create_table :donors do |t|
       t.string :name
       t.string :industry
-
+      
       t.timestamps
     end
   end

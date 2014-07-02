@@ -1,5 +1,10 @@
-class PoliticiansController < ApplicationController 
-	def index 
+class PoliticiansController < ApplicationController 	
+	def index
+		@politicians = Politician.get_politicians 
 	end
-	# this is a test
+
+	def show
+		# check the params thing....
+		@politicians = Politician.find(params[:id])
+	end
 end
