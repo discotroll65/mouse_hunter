@@ -1,0 +1,8 @@
+<h1>These are your representatives in Congress</h1>
+<% @politicians.each do |politician| %>
+	<ul>
+		<li>
+			<%= link_to politician["first_name"] + " " + politician["last_name"], "localhost:3000/politicians/show" %>
+		</li>
+	</ul>
+<% end %>
