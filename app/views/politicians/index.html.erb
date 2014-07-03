@@ -3,7 +3,7 @@
 	<ul>
 		<li>
 			
-			<%= link_to politician.name, "/politicians/#{politician.id}" %>
+			<%= link_to politician.name, politician_path(politician.id) %>
 		</li>
 	</ul>
 <% end %>
