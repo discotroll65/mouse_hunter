@@ -2,7 +2,8 @@
 <% @politicians.each do |politician| %>
 	<ul>
 		<li>
-			<%= link_to politician["first_name"] + " " + politician["last_name"], "localhost:3000/politicians/show" %>
+			
+			<%= link_to politician.name, politician_path(politician.id) %>
 		</li>
 	</ul>
 <% end %>
