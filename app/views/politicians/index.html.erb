@@ -1,9 +1,38 @@
+<<<<<<< HEAD
+<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic|Open+Sans:300italic,400italic,400,300,600|Raleway:400,100,200,300,500,600,700' rel='stylesheet' type='text/css'>
+
 <h1>These are your representatives in Congress</h1>
 <% @politicians.each do |politician| %>
 	<ul>
 		<li>
-			
 			<%= link_to politician.name, politician_path(politician.id) %>
+=======
+<h1>Please enter your zipcode to find your representatives</h1>
+
+	
+	<%= form_tag("/politicians", method: "get") do  %>
+		<%= label_tag(:zipcode, "Enter zipcode:")  %>
+		<%= text_field_tag(:zipcode)  %>
+		<%= submit_tag("Search") %>
+	
+	<%  end %>
+<h1>These are your searched for representatives in Congress</h1>
+
+
+<% @politicians_zip.each do |politician| %>
+	<ul>
+		<li>
+			<% unless politician.id == nil %>
+				<%= link_to politician.name, politician_path(politician.id) %>
+			<% else %>
+				<%= link_to politician.name, politician_path(Politician.where(:name => politician.name)[0].id) %>
+			<% end %>
+
+>>>>>>> 48fa0e5ba3eb95f3586e83b00da911344da062c8
 		</li>
 	</ul>
 <% end %>
+
+	
+
+

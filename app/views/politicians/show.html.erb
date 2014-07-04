@@ -1,44 +1,22 @@
-<h1> <%= "Showing data for #{@politician.name}" %> </h1>
-<p> THIS IS WHERE A POLITICAL PAGE WILL BE </p>
+<head>
+</head>
+<body>
+
+<header><h1><%= "#{@politician.title}" + ". " + "#{@politician.name}" %> </h1></header>
+
+
+<div class="quick_facts">
+	<ul>
+		<li><%= image_tag (@politician.symbol) %> </li>
+		<li><%= "#{@politician.party_finder}" + " from " + "#{@politician.state}" + "'s " + "#{@politician.district.to_i.ordinalize}" + " district"%></li>
+	</ul>
+</div>
+
+
 	<table>
-		<th>
-			<td>Attribute</td>
-			<td>Value</td>
-		</th>
-		
 		<tr>
-			<td> <%= "Name:" %>  </td>
-			<td> <%= "#{@politician.name}" %>  </td>	
-		</tr>
-
-		<tr>
-			<td> <%= "Last Name:" %>  </td>
-			<td> <%= "#{@politician.last_name}" %>  </td>	
-		</tr>
-
-		<tr>
-			<td> <%= "First Name:" %>  </td>
-			<td> <%= "#{@politician.first_name}" %>  </td>	
-		</tr>
-
-		<tr>
-			<td> <%= "District:" %>  </td>
-			<td> <%= "#{@politician.district}" %>  </td>	
-		</tr>
-
-		<tr>
-			<td> <%= "State:" %>  </td>
-			<td> <%= "#{@politician.state}" %>  </td>	
-		</tr>
-
-		<tr>
-			<td> <%= "Party:" %>  </td>
-			<td> <%= "#{@politician.party}" %>  </td>	
-		</tr>
-
-		<tr>
-			<td> <%= "Chamber:" %>  </td>
-			<td> <%= "#{@politician.title}" %>  </td>	
+			<th>Attribute</th>
+			<th>Value</th>
 		</tr>
 
 		<tr>
@@ -47,7 +25,7 @@
 		</tr>
 
 		<tr>
-			<td> <%= "twitter_id:" %>  </td>
+			<td> <%= "Twitter:" %>  </td>
 			<td> <%= link_to "#{@politician.twitter_id}", "http://www.twitter.com/#{@politician.twitter_id}" %>  </td>	
 		</tr>
 
@@ -55,5 +33,7 @@
 			<td> <%= "In office?:" %>  </td>
 			<td> <%= "#{@politician.in_office}" %>  </td>	
 		</tr>
-
+		
 	</table>
+
+</body>

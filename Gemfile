@@ -1,6 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'pry'
+group :development do
+	gem 'jazz_hands'
+	gem 'better_errors'
+	gem 'quiet_assets'
+	gem 'puma'
+end
+
 
 gem 'json'
 

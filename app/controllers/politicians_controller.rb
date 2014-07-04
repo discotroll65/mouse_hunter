@@ -1,16 +1,17 @@
 class PoliticiansController < ApplicationController 	
 	def index
-	@politicians = Politician.all
+	  #Data in the Politician table is currently populated/saved by running 'rake db:seed' in the terminal, which does an API call that hardwires in the reps from zipcode 12009##	
+		@politicians = Politician.all
+		@zipcode = params[:zipcode]
+	 
 
-	 ##Data is currently populated by running 'rake db:seed' in the terminal##
-		# @politicians = Politician.get_politicians
-		# Politician.destroy_all 
-		# @politicians.each do |politician|
-		# 	Politician.create(name: politician["last_name"])
-		# end
+		@politicians_zip = []
+		
+		#This goes over an array of hashes containing politicians of the passed in zipcode and their attributes, and then instantiates active records of them; they are NOT saved in the database.
+		Politician.get_politicians(@zipcode).each do |politician|
+			@politicians_zip << Politician.create(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"], district: politician["district"], state: politician["state"], title: politician["chamber"], twitter_id: politician["twitter_id"], in_office: politician["in_office"], contact_form: politician["contact_form"], party: politician["party"], congress_cid: politician["crp_id"])
+		end
 		# @politicians = Politician.all
-
-
 	end
 
 	def show
