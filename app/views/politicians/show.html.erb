@@ -1,10 +1,10 @@
 <h1> <%= "Showing data for #{@politician.name}" %> </h1>
 <p> THIS IS WHERE A POLITICAL PAGE WILL BE </p>
 	<table>
-		<th>
-			<td>Attribute</td>
-			<td>Value</td>
-		</th>
+		<tr>
+			<th>Attribute</th>
+			<th>Value</th>
+		</tr>
 		
 		<tr>
 			<td> <%= "Name:" %>  </td>
@@ -55,5 +55,9 @@
 			<td> <%= "In office?:" %>  </td>
 			<td> <%= "#{@politician.in_office}" %>  </td>	
 		</tr>
-
+		
+		<tr>
+			<td> <%= "Congressional ID:" %>  </td>
+			<td> <%= "#{@politician.congress_cid}" %>  </td>	
+		</tr>
 	</table>
