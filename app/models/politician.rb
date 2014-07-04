@@ -1,12 +1,13 @@
 class Politician < ActiveRecord::Base
-	def self.get_politicians
+	def self.get_politicians(zip)
 		
 		#zipcode is hardwired in currently
-		response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators/locate?zip=12009&apikey=64177a5c45dc44eb8752332b15fb89bf")
+		response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators/locate?zip=#{zip}&apikey=64177a5c45dc44eb8752332b15fb89bf")
 		parsed_response = JSON.parse(response)
 		politicians = parsed_response["results"]
 		politicians
 	end
+
 
 	def ordinalize
 		number = self.to_i
@@ -50,4 +51,6 @@ class Politician < ActiveRecord::Base
 		end
    end
 
+
+	validates_uniqueness_of :congress_cid
 end
