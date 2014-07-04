@@ -7,4 +7,6 @@ class Politician < ActiveRecord::Base
 		politicians = parsed_response["results"]
 		politicians
 	end
+
+	validates_uniqueness_of :congress_cid
 end

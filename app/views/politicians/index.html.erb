@@ -13,8 +13,12 @@
 <% @politicians_zip.each do |politician| %>
 	<ul>
 		<li>
-			
-			<%= link_to politician.name, politician_path(politician.id) %>
+			<% unless politician.id == nil %>
+				<%= link_to politician.name, politician_path(politician.id) %>
+			<% else %>
+				<%= link_to politician.name, politician_path(Politician.where(:name => politician.name)[0].id) %>
+			<% end %>
+
 		</li>
 	</ul>
 <% end %>
@@ -22,14 +26,3 @@
 	
 
 
-<h1>These are your representatives for zip 12009 in Congress</h1>
-
-
-<% @politicians.each do |politician| %>
-	<ul>
-		<li>
-			
-			<%= link_to politician.name, politician_path(politician.id) %>
-		</li>
-	</ul>
-<% end %>
