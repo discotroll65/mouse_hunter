@@ -2,9 +2,10 @@ Rails.application.routes.draw do
   # resources :bills, only: [:index, :show]
   # resources :sponsorships, only: [:index, :show]
 
+
   root 'static#index'
 
-  resources :politicians, only: [:index]
+  resources :politicians, only: [:index, :show]
 
   # resources :pvotes, only: [:index]
   # resources :donors, only: [:index]

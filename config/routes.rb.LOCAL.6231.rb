@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   root 'static#index'
 
   resources :politicians, only: [:index]
-
   # resources :pvotes, only: [:index]
   # resources :donors, only: [:index]
   # resources :lobbies, only: [:index]
