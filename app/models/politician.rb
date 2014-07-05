@@ -29,9 +29,9 @@ class Politician < ActiveRecord::Base
    end
 
    def symbol
-   		if self.party_finder == "Democrat"
+   		if self.party_finder == "democrat"
    			return "donkey.png"
-   		elsif self.party_finder == "Republican"
+   		elsif self.party_finder == "republican"
    			return "elephant.png"
    		else 
    			" "
@@ -41,11 +41,11 @@ class Politician < ActiveRecord::Base
    def party_finder
    		party_letter = self.party
 		if party_letter[0] == "D"
-			"Democrat"
+			"democrat"
 		elsif party_letter[0] == "R"
-			"Republican"
+			"republican"
 		elsif party_letter[0] == "I"
-			"Independent"
+			"independent"
 		else
 			" "
 		end
