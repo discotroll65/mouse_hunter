@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 group :development do
-	gem 'jazz_hands'
+	gem 'pry'
 	gem 'better_errors'
 	gem 'quiet_assets'
 	gem 'puma'

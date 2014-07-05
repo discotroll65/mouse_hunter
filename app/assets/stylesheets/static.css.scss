@@ -1,30 +1,52 @@
+
+
 /*navigation bar*/
-.nav {
-	background-color: black;
-	height: 50px;
-	min-width: 800px;
+#static {
+	.nav {
+		background-color: black;
+		height: 55px;
+		min-width: 800px;
 
+
+	}
+	ul {
+		list-style-type: none;
+		float: right;
+		padding-top: 10px;
+		list-style-position: center
+	}
+
+	li {
+		display: inline;
+		float: left;
+
+
+	}
+
+	.nav a {
+		display: block;
+		width: 80px;
+		text-decoration: none;
+		color: white;
+		padding-right: 10px;
+		padding-left: 25px;
+		font-family: 'Lato', 'Open Sans', 'Raleway', 'Sans-serif';
+	}
+
+	img{
+		width: 500px;
+		height: 440px;
+		image-resolution: 300dpi;
+	}
+
+	a.left.carousel-control{
+		display: hidden;
+	}
+
+	#zipcode_carousel .carousel.slide{
+		padding-top: 10px;
+	}
 }
-ul {
-	list-style-type: none;
-	float: right;
+/*image carousel for zipcode search*/
 
-	list-style-position: center
-}
-
-li {
-	display: inline;
-	float: left;
-
-
-}
-
-a {
-	display: block;
-	width: 80px;
-	text-decoration: none;
-	color: white;
-	padding-right: 10px;
-
-}
 
