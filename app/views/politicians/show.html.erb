@@ -32,28 +32,23 @@
 
 <div class="general_information">
 
-	<table>
-		<tr>
-			<th>Attribute</th>
-			<th>Value</th>
-		</tr>
-
-		<tr>
-			<td> <%= "Contact URL:" %>  </td>
-			<td> <%= link_to "#{@politician.contact_form}", "#{@politician.contact_form}" %>  </td>	
-		</tr>
-
-		<tr>
-			<td> <%= "Twitter:" %>  </td>
-			<td> <%= link_to "#{@politician.twitter_id}", "http://www.twitter.com/#{@politician.twitter_id}" %>  </td>	
-		</tr>
-
-		<tr>
-			<td> <%= "In office?:" %>  </td>
-			<td> <%= "#{@politician.in_office}" %>  </td>	
-		</tr>
-		
-	</table>
+	<div class="donors_icon">
+		<%= image_tag "donors.png", id: "donors_icon"%>
+		<p>DONORS</p>
+	</div>
+	<div class="fundraising_campaigns_icon">
+		<%= image_tag "fundraising_campaigns.png", id: "fundraising_campaigns_icon" %>
+		<p>FUNDRAISING CAMPAIGN</p>
+	</div>
+	<div class="ideology_icon">
+		<%= image_tag "ideology.png", id: "ideology_icon" %>
+		<p>IDEOLOGY</p>
+	</div>
+	<div class="legislation_icon">
+		<%= image_tag "legislation.png", id: "legislation_icon" %>
+		<p>LEGISLATION</p>
+	</div>
+	
 
 </div>
 
