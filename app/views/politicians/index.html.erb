@@ -1,12 +1,14 @@
-<<<<<<< HEAD
+
 <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic|Open+Sans:300italic,400italic,400,300,600|Raleway:400,100,200,300,500,600,700' rel='stylesheet' type='text/css'>
+
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,300italic,400italic,500' rel='stylesheet' type='text/css'>
 
 <h1>These are your representatives in Congress</h1>
 <% @politicians.each do |politician| %>
 	<ul>
 		<li>
 			<%= link_to politician.name, politician_path(politician.id) %>
-=======
+
 <h1>Please enter your zipcode to find your representatives</h1>
 
 	
@@ -28,7 +30,7 @@
 				<%= link_to politician.name, politician_path(Politician.where(:name => politician.name)[0].id) %>
 			<% end %>
 
->>>>>>> 48fa0e5ba3eb95f3586e83b00da911344da062c8
+
 		</li>
 	</ul>
 <% end %>
