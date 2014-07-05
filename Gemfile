@@ -7,6 +7,8 @@ group :development do
 	gem 'puma'
 end
 
+gem 'binding_of_caller'
+
 gem 'json'
 
 gem 'rest-client'
