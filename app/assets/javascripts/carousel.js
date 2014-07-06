@@ -31,7 +31,7 @@
   Carousel.VERSION  = '3.2.0'
 
   Carousel.DEFAULTS = {
-    interval: 5000,
+    interval: 1700,
     pause: 'hover',
     wrap: true
   }
