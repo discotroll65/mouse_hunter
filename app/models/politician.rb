@@ -41,11 +41,10 @@ class Politician < ActiveRecord::Base
     detailed_info = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.NYT_id}.json?api-key=#{api_key}")
     parsed_detailed_info = JSON.parse(detailed_info)
 
-    # self.update_attributes(seniority: parsed_detailed_info["results"][0]["roles"]["seniority"])
-
-    # ,missed_votes_pct: parsed_detailed_info["results"][0]["roles"]["missed_votes_pct"], votes_with_party_pct: parsed_detailed_info["results"][0]["roles"]["votes_with_party_pct"], facebook_account: parsed_detailed_info["results"][0]["facebook_account"]
+    self.update_attributes(seniority: parsed_detailed_info["results"][0]["roles"][0]["seniority"],missed_votes_pct: parsed_detailed_info["results"][0]["roles"][0]["missed_votes_pct"], votes_with_party_pct: parsed_detailed_info["results"][0]["roles"][0]["votes_with_party_pct"], facebook_account: parsed_detailed_info["results"][0]["facebook_account"])
 
     self
+
 
   end
 
