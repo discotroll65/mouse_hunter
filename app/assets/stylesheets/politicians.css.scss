@@ -35,12 +35,12 @@ header {
 
 		.segmentor {
 			position: relative;
-			top:-5px;
+			top:5px;
 			height: 30px;
 		}
 
 		.social_media_icons {
-			padding-bottom: 10px;
+			
 		}
 
 
@@ -49,8 +49,8 @@ header {
 }
 
 li:nth-child(n+1):nth-child(even):nth-child(-n+6) {
-			position:relative;
-			top:-15px;
+		position: relative;
+		top:5px;	
 }
 
 
