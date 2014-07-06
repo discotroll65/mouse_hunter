@@ -8,6 +8,8 @@ class Politician < ActiveRecord::Base
 		politicians
 	end
 
+	
+
 
 	def ordinalize
 		number = self.to_i
