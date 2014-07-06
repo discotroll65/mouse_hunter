@@ -3,23 +3,16 @@
 
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,300italic,400italic,500' rel='stylesheet' type='text/css'>
 
-<h1>These are your representatives in Congress</h1>
-<% @politicians.each do |politician| %>
-	<ul>
-		<li>
-			<%= link_to politician.name, politician_path(politician.id) %>
-
 <h1>Please enter your zipcode to find your representatives</h1>
 
-	
+
 	<%= form_tag("/politicians", method: "get") do  %>
 		<%= label_tag(:zipcode, "Enter zipcode:")  %>
 		<%= text_field_tag(:zipcode)  %>
 		<%= submit_tag("Search") %>
-	
+
 	<%  end %>
 <h1>These are your searched for representatives in Congress</h1>
-
 
 <% @politicians_zip.each do |politician| %>
 	<ul>
@@ -27,14 +20,11 @@
 			<% unless politician.id == nil %>
 				<%= link_to politician.name, politician_path(politician.id) %>
 			<% else %>
+				
 				<%= link_to politician.name, politician_path(Politician.where(:name => politician.name)[0].id) %>
+
 			<% end %>
-
-
 		</li>
 	</ul>
 <% end %>
-
-	
-
 
