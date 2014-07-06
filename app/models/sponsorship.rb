@@ -1,4 +1,7 @@
 class Sponsorship < ActiveRecord::Base
+	belongs_to :politician
+	belongs_to :bill
+
 	def self.get_sponsorship
 		# get help with API reading
 		response = RestClient.get("")

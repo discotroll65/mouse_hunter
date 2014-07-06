@@ -1,4 +1,11 @@
 class Politician < ActiveRecord::Base
+  has_many :sponsorships
+  has_many :pvotes
+  has_many :lobbies
+  has_many :donors, :through => :lobbies
+  has_many :sponsored_bills, :through => :sponsorships, :source => :bill
+  has_many :voted_bills, :through => :pvotes, :source => :bill
+
 	def self.get_politicians(zip)
 		
 		#zipcode is hardwired in currently
