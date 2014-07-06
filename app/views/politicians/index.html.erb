@@ -17,6 +17,8 @@
 <% @politicians_zip.each do |politician| %>
 	<ul>
 		<li>
+			<!-- can make this faster later with Politician.where(:last_name => Politician.get_politicians(12009)[0]["last_name"]) -->
+
 			<% unless politician.id == nil %>
 				<%= link_to politician.name, politician_path(politician.id) %>
 			<% else %>
