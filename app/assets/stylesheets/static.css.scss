@@ -3,36 +3,6 @@
 
 /*navigation bar*/
 #static {
-	.nav {
-		background-color: black;
-		height: 55px;
-		min-width: 800px;
-
-
-	}
-	ul {
-		list-style-type: none;
-		float: right;
-		padding-top: 10px;
-		list-style-position: center
-	}
-
-	li {
-		display: inline;
-		float: left;
-
-
-	}
-
-	.nav a {
-		display: block;
-		width: 80px;
-		text-decoration: none;
-		color: white;
-		padding-right: 10px;
-		padding-left: 25px;
-		font-family: 'Lato', 'Open Sans', 'Raleway', 'Sans-serif';
-	}
 
 	img{
 		width: 500px;
@@ -40,9 +10,12 @@
 		image-resolution: 300dpi;
 	}
 
-	a.left.carousel-control{
+	ul.nav.navbar-nav li a #Weird {
 		display: hidden;
+		padding-top: 2em;
 	}
+
+	
 
 	#zipcode_carousel .carousel.slide{
 		padding-top: 10px;
