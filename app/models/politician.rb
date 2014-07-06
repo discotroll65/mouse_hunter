@@ -8,8 +8,7 @@ class Politician < ActiveRecord::Base
 		politicians
 	end
 
-<<<<<<< HEAD
-=======
+
 	def get_info_from_NYT
     #NYTimes api key
     api_key = "64530e3bc4c658192fb76270ca3b8eba:5:69549341"
@@ -49,9 +48,6 @@ class Politician < ActiveRecord::Base
     self
 
   end
-
-
->>>>>>> 35134583299773bfa35d104ca91340b53ca3a31f
 
 
 	def ordinalize
