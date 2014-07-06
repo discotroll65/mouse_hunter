@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140706122333) do
+ActiveRecord::Schema.define(version: 20140706141227) do
 
   create_table "bills", force: true do |t|
     t.string   "title"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20140706122333) do
     t.string   "missed_votes_pct"
     t.string   "votes_with_party_pct"
     t.string   "facebook_account"
+    t.string   "bioguide_id"
   end
 
   create_table "pvotes", force: true do |t|
