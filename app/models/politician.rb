@@ -8,6 +8,15 @@ class Politician < ActiveRecord::Base
 		politicians
 	end
 
+	def self.get_basic_info
+		response = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/113/#{@politician.chamber}/members.json?&state=#{@politician.state}&api-key=64530e3bc4c658192fb76270ca3b8eba:5:69549341")
+		parsed_response = JSON.parse(response)
+		politicians_basic_stats = parsed_response["results"]["members"]
+		politicians_basic_stats
+	end
+
+
+
 
 	def ordinalize
 		number = self.to_i
@@ -51,6 +60,13 @@ class Politician < ActiveRecord::Base
 		end
    end
 
+    def check_if_senator
+	    if self.district
+	   		"'s " + "#{self.district.to_i.ordinalize}" + " district"
+		else 
+			" "
+		end
+	end
 
 	validates_uniqueness_of :congress_cid
 end

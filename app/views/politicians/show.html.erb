@@ -15,7 +15,7 @@
 <div class="quick_facts">
 	<ul>
 		<li><%= image_tag @politician.symbol, id: "party_icon" %> </li>
-		<li class="quick_stats"><%= "#{@politician.party_finder}" + " from " + "#{@politician.state}" + "'s " + "#{@politician.district.to_i.ordinalize}" + " district"%></li>
+		<li class="quick_stats"><%= "#{@politician.party_finder}" + " from " + "#{@politician.state}" + "#{@politician.check_if_senator}"%></li>
 		<li><%= image_tag "segmentor.png", class: "segmentor" %></li>
 		<li class="quick_stats">years in office</li>
 		<li><%= image_tag "segmentor.png", class: "segmentor" %></li>
@@ -41,7 +41,7 @@
 		<p>FUNDRAISING CAMPAIGN</p>
 	</div>
 	<div class="ideology_icon">
-		<%= image_tag "ideology.png", id: "ideology_icon" %>
+		<%= image_tag "hands.png", id: "ideology_icon" %>
 		<p>IDEOLOGY</p>
 	</div>
 	<div class="legislation_icon">
