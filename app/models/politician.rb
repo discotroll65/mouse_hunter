@@ -1,3 +1,5 @@
+
+
 class Politician < ActiveRecord::Base
   has_many :sponsorships
   has_many :pvotes
@@ -59,14 +61,13 @@ class Politician < ActiveRecord::Base
     # #count how many pages there are
     # counter = (parsed_bill_info["count"].to_f / parsed_bill_info["page"]["per_page"].to_f).ceil
      
-
-    # #go through all the pages of the bills the politician has sponsored
-    # parsed_bill_info["results"].each do |bill|
-    #     bills_sponsored << Bill.create(title: bill["#{
-    #           bill["short_title"] ? "short_title" : "official_title"
-    #           }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}")
-    #     #description: "URL for description: #{bill["urls"]["govtrack"]}"
-    #   end
+    #go through all the pages of the bills the politician has sponsored
+    parsed_bill_info["results"].each do |bill|
+        bills_sponsored << Bill.create(title: bill["#{
+              bill["short_title"] ? "short_title" : "official_title"
+              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}")
+        #description: "URL for description: #{bill["urls"]["govtrack"]}"
+    end
 
     # if counter > 1
       
@@ -84,7 +85,10 @@ class Politician < ActiveRecord::Base
 
     # self.sponsored_bills = bills_sponsored
 
+
   end
+
+
 
 
 	def ordinalize
@@ -138,4 +142,6 @@ class Politician < ActiveRecord::Base
 	end
 
 	validates_uniqueness_of :congress_cid
+
+
 end

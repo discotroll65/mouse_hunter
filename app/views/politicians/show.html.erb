@@ -16,8 +16,8 @@
 	<%= form_tag politicians_path, :method => 'GET' do %>
 		<%= text_field_tag 'q' %>
 		<%= submit_tag 'SEARCH' %> 
-
 		<% end %>
+
 <div class="quick_facts">
 	<ul>
 		<li><%= image_tag @politician.symbol, id: "party_icon" %> </li>
@@ -59,16 +59,17 @@
 
 </div>
 
-<div class="donors">
+<div id="donors">
+	<%= image_tag(@donors_bar_graph) %>
 </div>
 
-<div class="fundraising_campaigns">
+<div id="fundraising_campaigns">
 </div>
 
-<div class="ideology">
+<div id="ideology">
 </div>
 
-<div class="legislation">
+<div id="legislation">
 </div>
 
 </body>
