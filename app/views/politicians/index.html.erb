@@ -16,11 +16,10 @@
 
 <div class="display_politicians">
 
-	<h1>These are your searched for representatives in Congress</h1>
-
+	<ul class="list_of_local">
 	<% @politicians_zip.each do |politician| %>
-		<ul>
-			<li>
+		
+				<li class="link">
 				<!-- can make this faster later with Politician.where(:last_name => Politician.get_politicians(12009)[0]["last_name"]) -->
 
 				<% unless politician.id == nil %>
@@ -31,8 +30,11 @@
 
 				<% end %>
 			</li>
-		</ul>
+		
 	<% end %>
+	</ul>
+
+	<h1>These are your searched for representatives in Congress</h1>
 
 </div>
 
