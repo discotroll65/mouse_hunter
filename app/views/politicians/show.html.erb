@@ -16,6 +16,8 @@
 	<%= form_tag politicians_path, :method => 'GET' do %>
 		<%= text_field_tag 'q' %>
 		<%= submit_tag 'SEARCH' %> 
+
+		
 <div class="quick_facts">
 	<ul>
 		<li><%= image_tag @politician.symbol, id: "party_icon" %> </li>
