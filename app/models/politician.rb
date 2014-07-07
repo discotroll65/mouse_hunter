@@ -3,7 +3,7 @@ class Politician < ActiveRecord::Base
   has_many :pvotes
   has_many :lobbies
   has_many :donors, :through => :lobbies
-  has_many :sponsored_bills, :through => :sponsorships, :source => :bill
+  has_many :sponsored_bills, :through => :sponsorships, :source => :bill, :dependent => :destroy
   has_many :voted_bills, :through => :pvotes, :source => :bill
 
 	def self.get_politicians(zip)
@@ -42,16 +42,47 @@ class Politician < ActiveRecord::Base
     end   
 
     #assigns NYT id and next election date
-    self["NYT_id"] = parsed_response["id"]
+    # self["NYT_id"] = parsed_response["id"]
     self.update_attributes(next_election: parsed_response["next_election"])
 
-    detailed_info = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.NYT_id}.json?api-key=#{api_key}")
+    detailed_info = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.bioguide_id}.json?api-key=#{api_key}")
     parsed_detailed_info = JSON.parse(detailed_info)
 
     self.update_attributes(seniority: parsed_detailed_info["results"][0]["roles"][0]["seniority"],missed_votes_pct: parsed_detailed_info["results"][0]["roles"][0]["missed_votes_pct"], votes_with_party_pct: parsed_detailed_info["results"][0]["roles"][0]["votes_with_party_pct"], facebook_account: parsed_detailed_info["results"][0]["facebook_account"])
 
-    self
+    #Get bills this politician has sponsored
+    bills_sponsored = []
 
+
+    bill_info = RestClient.get("http://congress.api.sunlightfoundation.com/bills?sponsor_id=#{self.bioguide_id}&apikey=64177a5c45dc44eb8752332b15fb89bf&page=1")
+    parsed_bill_info = JSON.parse(bill_info)
+    #count how many pages there are
+    counter = (parsed_bill_info["count"].to_f / parsed_bill_info["page"]["per_page"].to_f).ceil
+     
+
+    #go through all the pages of the bills the politician has sponsored
+    parsed_bill_info["results"].each do |bill|
+        bills_sponsored << Bill.create(title: bill["#{
+              bill["short_title"] ? "short_title" : "official_title"
+              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}")
+        #description: "URL for description: #{bill["urls"]["govtrack"]}"
+      end
+
+    if counter > 1
+      
+      2.upto(counter) do |time|
+        bill_info_loop = RestClient.get("http://congress.api.sunlightfoundation.com/bills?sponsor_id=#{self.bioguide_id}&apikey=64177a5c45dc44eb8752332b15fb89bf&page=#{time}")
+        parsed_bill_info_loop = JSON.parse(bill_info_loop)
+        parsed_bill_info_loop["results"].each do |bill|
+          bills_sponsored << Bill.create(title: bill["#{
+              bill["short_title"] ? "short_title" : "official_title"
+              }" ] , issue: bill["committee_ids"][0], status: "enacted? " + "#{bill["history"]["enacted"]}")
+        end
+      end
+
+    end
+
+    self.sponsored_bills = bills_sponsored
 
   end
 
