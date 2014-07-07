@@ -12,6 +12,10 @@
 	<%= image_tag "http://theunitedstates.io/images/congress/450x550/#{@politician.bioguide_id}.jpg", id: "profile_picture" %>
 </div>
 <header><h1><%= "#{@politician.title}" + ". " + "#{@politician.name}" %> </h1></header>
+
+	<%= form_tag politicians_path, :method => 'GET' do %>
+		<%= text_field_tag 'q' %>
+		<%= submit_tag 'SEARCH' %> 
 <div class="quick_facts">
 	<ul>
 		<li><%= image_tag @politician.symbol, id: "party_icon" %> </li>
