@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
 group :development do
-	gem 'pry'
+	#gem 'pry'
 	gem 'better_errors'
 	gem 'quiet_assets'
 	gem 'puma'
 	gem 'binding_of_caller'
-	#gem 'jazz_hands'
+	gem 'jazz_hands'
 end
 
 gem 'geocoder'
