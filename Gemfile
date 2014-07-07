@@ -8,7 +8,7 @@ group :development do
 	gem 'binding_of_caller'
 end
 
-gem 'googlecharts'
+gem "googlecharts", :require => "gchart"
 
 gem 'json'
 
