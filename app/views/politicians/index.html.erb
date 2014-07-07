@@ -12,6 +12,7 @@
 		<%= submit_tag("Search") %>
 
 	<%  end %>
+
 <h1>These are your searched for representatives in Congress</h1>
 
 <% @politicians_zip.each do |politician| %>
@@ -30,3 +31,23 @@
 	</ul>
 <% end %>
 
+
+
+<div class="display_politicians">
+
+	<h1>These are your representatives</h1>
+
+		<ul>
+	<% @politicians_zip.each do |politician| %>
+			<li>
+				<% unless politician.id == nil %>
+					<%= link_to politician.name, politician_path(politician.id), class: "link" %>
+				<% else %>
+					
+					<%= link_to politician.name, politician_path(Politician.where(:name => politician.name)[0].id), class: "link" %>
+
+				<% end %>
+			</li>
+	<% end %>
+	</ul>
+</div>

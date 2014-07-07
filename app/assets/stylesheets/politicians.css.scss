@@ -1,3 +1,39 @@
+.display_politicians {
+	background-color:rgba(0,0,0,.85);
+	background-image: url('dc_background.jpg');
+	background-repeat: no-repeat;
+	background-size:cover;
+	height: 100vh;
+	font-family:'Raleway';
+	
+
+	h1 {
+		color:white;
+		font-weight:lighter;
+		text-align:center;
+	}
+
+	li {
+		list-style-type: none;
+		width:15;
+		margin-left:8vw;
+	}
+
+	.link {
+		font-family:'Open Sans';
+		font-weight:lighter;
+		font-size: 1.2em;
+		text-align:center;
+		padding:20px;
+	}
+
+	.preview {
+		border-radius:100px;
+		height:170px;
+		width:150px;
+	}
+}
+
 
 header {
 	background-color: black;
