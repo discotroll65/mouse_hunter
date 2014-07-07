@@ -4,6 +4,17 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+__MACOSX
+.DS_Store
+
+# OS generated files #
+######################
+*/.DS_Store
+.DS_Store
+.DS_Store?
+._*
+
+
 # Ignore bundler config.
 /.bundle
 
