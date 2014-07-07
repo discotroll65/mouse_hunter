@@ -8,7 +8,7 @@ class PoliticiansController < ApplicationController
 		@politicians_zip = []
 		
 		#This goes over an array of hashes containing politicians of the passed-in zipcode and their attributes, and then creates active records of them. A validate uniqueness in the model makes sure that duplicates don't happen
-
+		
 
 		Politician.get_politicians(@zipcode).each do |politician|
 
