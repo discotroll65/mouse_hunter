@@ -28,11 +28,8 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
-<<<<<<< HEAD
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-=======
->>>>>>> 3a42cdeba64099d8ac82db5d09425ff8eb1da675
     bootstrap-sass (3.2.0.0)
       sass (~> 3.2)
     builder (3.2.2)
