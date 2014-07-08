@@ -6,23 +6,40 @@ class Politician < ActiveRecord::Base
   has_many :sponsored_bills, :through => :sponsorships, :source => :bill, :dependent => :destroy
   has_many :voted_bills, :through => :pvotes, :source => :bill
 
-	def self.get_politicians(zip)
+	
+  def self.get_politicians_by_zip(zip)
+		#binding.pry
 		
-		#zipcode is hardwired in currently
-		response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators/locate?zip=#{zip}&apikey=64177a5c45dc44eb8752332b15fb89bf")
+		response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators/locate?zip=#{zip}&apikey=#{ENV["SUNLIGHT_API"]}")
 		parsed_response = JSON.parse(response)
 		politicians = parsed_response["results"]
+    #binding.pry
 		politicians
 	end
 
 
+#This goes over an array returned by the method "get_politicians_by_zip", which contains hashes of politicians, and then creates active records of them using various API pulls. It also generates all the bills a politician has sponsored. A validate uniqueness in the politician and bill models make sure that duplicates don't happen. Method returns an array of Active records.
+    
+  def self.get_all_data_for_politicians(array_of_politician_hashes)
+    #initialize array to be returned
+    politician_active_records = []
+
+    array_of_politician_hashes.each do |politician|
+
+      politician_active_records << Politician.create(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"], district: politician["district"], state: politician["state"], title: politician["title"], twitter_id: politician["twitter_id"], in_office: politician["in_office"], contact_form: politician["contact_form"], party: politician["party"], congress_cid: politician["crp_id"], chamber: politician["chamber"], bioguide_id: politician["bioguide_id"])
+      #binding.pry
+      #Gets all the data for Politician record from NYT
+     Politician.last.get_info_from_NYT
+    end
+
+    politician_active_records
+  end
+
+  #instance method that updates that instance's info using api calls from the sunlight foundation and NYT apis
 	def get_info_from_NYT
-    #NYTimes api key
-    api_key = "64530e3bc4c658192fb76270ca3b8eba:5:69549341"
+    #binding.pry
 
-    #use the info from the sunlight foundation to look up current member for state info from the NYT
-
-    response = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.chamber}/#{self.state}/#{self.district}/current.json?api-key=#{api_key}")
+    response = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.chamber}/#{self.state}/#{self.district}/current.json?api-key=#{ENV["NYT_API"]}")
     
     #Handles case where Congress person is from House or Senate
     if self.chamber == "house"
@@ -42,10 +59,9 @@ class Politician < ActiveRecord::Base
     end   
 
     #assigns NYT id and next election date
-    # self["NYT_id"] = parsed_response["id"]
     self.update_attributes(next_election: parsed_response["next_election"])
 
-    detailed_info = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.bioguide_id}.json?api-key=#{api_key}")
+    detailed_info = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.bioguide_id}.json?api-key=#{ENV["NYT_API"]}")
     parsed_detailed_info = JSON.parse(detailed_info)
 
     self.update_attributes(seniority: parsed_detailed_info["results"][0]["roles"][0]["seniority"],missed_votes_pct: parsed_detailed_info["results"][0]["roles"][0]["missed_votes_pct"], votes_with_party_pct: parsed_detailed_info["results"][0]["roles"][0]["votes_with_party_pct"], facebook_account: parsed_detailed_info["results"][0]["facebook_account"])
@@ -54,7 +70,7 @@ class Politician < ActiveRecord::Base
     bills_sponsored = []
 
 
-    bill_info = RestClient.get("http://congress.api.sunlightfoundation.com/bills?sponsor_id=#{self.bioguide_id}&apikey=64177a5c45dc44eb8752332b15fb89bf&page=1")
+    bill_info = RestClient.get("http://congress.api.sunlightfoundation.com/bills?sponsor_id=#{self.bioguide_id}&apikey=#{ENV["SUNLIGHT_API"]}&page=1")
     parsed_bill_info = JSON.parse(bill_info)
     #count how many pages there are
     counter = (parsed_bill_info["count"].to_f / parsed_bill_info["page"]["per_page"].to_f).ceil
@@ -71,7 +87,7 @@ class Politician < ActiveRecord::Base
     if counter > 1
       
       2.upto(counter) do |time|
-        bill_info_loop = RestClient.get("http://congress.api.sunlightfoundation.com/bills?sponsor_id=#{self.bioguide_id}&apikey=64177a5c45dc44eb8752332b15fb89bf&page=#{time}")
+        bill_info_loop = RestClient.get("http://congress.api.sunlightfoundation.com/bills?sponsor_id=#{self.bioguide_id}&apikey=#{ENV["SUNLIGHT_API"]}&page=#{time}")
         parsed_bill_info_loop = JSON.parse(bill_info_loop)
         parsed_bill_info_loop["results"].each do |bill|
           bills_sponsored << Bill.create(title: bill["#{

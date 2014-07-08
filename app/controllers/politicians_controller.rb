@@ -4,23 +4,39 @@ class PoliticiansController < ApplicationController
 		@politicians = Politician.all
 		@zipcode = params[:zipcode]
 	 
-
+		#Initialize what will be an array of active records
 		@politicians_zip = []
+
+
+		#when first visting /politicans, this is empty, but after the user enters a zipcode,
+		#politicians_zip_ an array of Politician Hashes
+		politicians_zip_hash = Politician.get_politicians_by_zip(@zipcode)
+
 		
-		#This goes over an array of hashes containing politicians of the passed-in zipcode and their attributes, and then creates active records of them. A validate uniqueness in the model makes sure that duplicates don't happen
-		
-
-		Politician.get_politicians(@zipcode).each do |politician|
-
-			@politicians_zip << Politician.create(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"], district: politician["district"], state: politician["state"], title: politician["title"], twitter_id: politician["twitter_id"], in_office: politician["in_office"], contact_form: politician["contact_form"], party: politician["party"], congress_cid: politician["crp_id"], chamber: politician["chamber"], bioguide_id: politician["bioguide_id"])
-			#Gets all the data for Politician record from NYT
-
-			Politician.last.get_info_from_NYT
-
-
+		#Making an array of initialized Politician active records
+		politicians_zip_hash.each do |politician|
+			
+			@politicians_zip << Politician.new(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"])
 		end
-		# @politicians = Politician.all
 
+		#checks for when the user first gets to the page
+		if politicians_zip_hash.count != 0
+			#checks to see if the politicians are already in the Database
+			number_of_matches = 0
+
+			@politicians_zip.each do |politician|
+				number_of_matches += Politician.where(:last_name => politician.last_name).count
+				#binding.pry
+			end
+			puts "Number of matches = #{number_of_matches}"
+			#if politicians are not in the database, create them, get their data
+			if number_of_matches != @politicians_zip.count
+			 @politicians_zip = Politician.get_all_data_for_politicians(politicians_zip_hash)
+			end
+		end
+
+
+		#binding.pry
 	end
 
 	def show
