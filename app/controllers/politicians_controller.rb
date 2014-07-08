@@ -29,5 +29,6 @@ class PoliticiansController < ApplicationController
 	def show
 		@politician = Politician.find(params[:id])
 		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
+		@counts = Donor.distinct.group(:industry).count
 	end
 end
