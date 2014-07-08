@@ -6,6 +6,51 @@
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,200italic,300italic,400italic,600italic' rel='stylesheet' type='text/css'>
 
 <head>
+	  <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+     // Load the Visualization API and the piechart package.
+     google.load('visualization', '1.0', {'packages':['corechart']});
+
+     // Set a callback to run when the Google Visualization API is loaded.
+     google.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+
+    function drawChart() {
+
+        // Create the data table.
+        var data = google.visualization.arrayToDataTable( [
+  		  ['industry', 'companies'],
+          <% @counts.each_with_index do |(industry, count), index| %>
+        		[ '<%=industry%>', <%=count%> ]<%="," unless index == @counts.size - 1 %>
+        	<% end %>
+        ]);
+
+	    // Set chart options
+	    var options = {
+	    	title:'donors by industry',
+	    	titleTextStyle: {color:'black', fontName: 'Open Sans', fontSize: 14},
+	        pieHole: .4,
+	        colors: ['#FFCB9E', '#FF4A4A', '#FF6200', '#FF8833', '#FF7B0F'],
+	        fontName: "Lato",
+	        legend: {position:'none'},
+	        pieSliceTextStyle: {color:"white", fontName:"Open Sans"},
+	        pieSliceText: 'label',
+	        chartArea: {left:20}
+	    };
+
+	    // Instantiate and draw our chart, passing in some options.
+	    var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+	        chart.draw(data, options);
+    }
+
+    </script>
+
+
 </head>
 <body>
 <div id="profile_picture_div">
@@ -13,11 +58,6 @@
 </div>
 <header><h1><%= "#{@politician.title}" + ". " + "#{@politician.name}" %> </h1></header>
 
-	<%= form_tag politician_path, :method => 'GET' do %>
-		<%= label_tag(:q, 'Find A Politician:') %>
-		<%= text_field_tag 'q', params[:q] %>
-		<%= submit_tag('SEARCH') %> 
-		<% end %>
 
 <div class="quick_facts">
 	<ul>
@@ -40,13 +80,9 @@
 
 <div class="general_information">
 
-	<div class="donors_icon">
-		<%= image_tag "donors.png", id: "donors_icon"%>
-		<p>DONORS</p>
-	</div>
 	<div class="fundraising_campaigns_icon">
 		<%= image_tag "fundraising_campaigns.png", id: "fundraising_campaigns_icon" %>
-		<p>FUNDRAISING CAMPAIGN</p>
+		<p>FUNDRAISING</p>
 	</div>
 	<div class="ideology_icon">
 		<%= image_tag "hands.png", id: "ideology_icon" %>
@@ -61,7 +97,7 @@
 </div>
 
 <div id="donors">
-	<%= image_tag(@donors_bar_graph) %>
+	<div id="donutchart" style="width: 600px; height: 300px;"></div>
 </div>
 
 <div id="fundraising_campaigns">
@@ -71,6 +107,7 @@
 </div>
 
 <div id="legislation">
+
 </div>
 
 </body>
