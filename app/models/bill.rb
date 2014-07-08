@@ -10,4 +10,5 @@ class Bill < ActiveRecord::Base
 		bills = parsed_response[""]
 		bills
 	end
+	#validates_uniqueness_of :title
 end
