@@ -1,3 +1,5 @@
+
+
 class Politician < ActiveRecord::Base
   has_many :sponsorships
   has_many :pvotes
@@ -58,7 +60,7 @@ class Politician < ActiveRecord::Base
       parsed_response = JSON.parse(response)["results"][@senator_index]
     end   
 
-    #assigns NYT id and next election date
+    #assigns next election date
     self.update_attributes(next_election: parsed_response["next_election"])
 
     detailed_info = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.bioguide_id}.json?api-key=#{ENV["NYT_API"]}")
@@ -72,19 +74,19 @@ class Politician < ActiveRecord::Base
 
     bill_info = RestClient.get("http://congress.api.sunlightfoundation.com/bills?sponsor_id=#{self.bioguide_id}&apikey=#{ENV["SUNLIGHT_API"]}&page=1")
     parsed_bill_info = JSON.parse(bill_info)
+    
     #count how many pages there are
     counter = (parsed_bill_info["count"].to_f / parsed_bill_info["page"]["per_page"].to_f).ceil
      
-
     #go through all the pages of the bills the politician has sponsored
     parsed_bill_info["results"].each do |bill|
         bills_sponsored << Bill.create(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
               }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}")
-        #description: "URL for description: #{bill["urls"]["govtrack"]}"
-      end
+        #add later --description: "URL for description: #{bill["urls"]["govtrack"]}"
+    end
 
-    if counter > 1
+     if counter > 1
       
       2.upto(counter) do |time|
         bill_info_loop = RestClient.get("http://congress.api.sunlightfoundation.com/bills?sponsor_id=#{self.bioguide_id}&apikey=#{ENV["SUNLIGHT_API"]}&page=#{time}")
@@ -96,11 +98,14 @@ class Politician < ActiveRecord::Base
         end
       end
 
-    end
+     end
 
     self.sponsored_bills = bills_sponsored
 
+
   end
+
+
 
 
 	def ordinalize
@@ -154,4 +159,6 @@ class Politician < ActiveRecord::Base
 	end
 
 	validates_uniqueness_of :congress_cid
+
+
 end

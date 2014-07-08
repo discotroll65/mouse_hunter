@@ -1,4 +1,7 @@
-class PoliticiansController < ApplicationController 	
+
+class PoliticiansController < ApplicationController 
+	require 'Gchart'
+
 	def index
 	  #Data in the Politician table is currently populated/saved by running 'rake db:seed' in the terminal, which does an API call that hardwires in the reps from zipcode 12009##	
 		@politicians = Politician.all
@@ -41,6 +44,6 @@ class PoliticiansController < ApplicationController
 
 	def show
 		@politician = Politician.find(params[:id])
-
+		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
 	end
 end
