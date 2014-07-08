@@ -7,7 +7,6 @@ group :development do
 	gem 'puma'
 	# gem 'binding_of_caller'
 	#gem 'jazz_hands'
-
 end
 
 gem "googlecharts", :require => "gchart"
