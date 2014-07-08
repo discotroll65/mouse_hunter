@@ -28,11 +28,23 @@
 		            <li id= "Weird"><a href="#Contact">Contact</a></li>
 		         <!--    <li><a href="#contact">Contact</a></li>
 		            <li><a href="#contact">Contact</a></li> -->
+		        
+		           
+
+					 <li id="Name Search Bar">	
+						<%= form_tag("/politicians", method: "get") do  %>
+						<%= label_tag(:query, "Enter name:")  %>
+						<%= text_field_tag(:query)  %>
+						<%= submit_tag("Search") %>
+						<%  end %>
+					</li>		
 		          </ul>
 		        </div><!--/.nav-collapse -->
 		      </div>
 		    </div>
 <!-- Carousel of images -->
+
+
 			<div id="zipcode_carousel" class="carousel slide" data-ride="carousel">
 	 			 <!-- Indicators -->
 				  <ol class="carousel-indicators">
