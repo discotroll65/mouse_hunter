@@ -1,6 +1,6 @@
 
 class PoliticiansController < ApplicationController 
-	require 'Gchart'
+	require 'googlecharts'
 
 	def index
 	  #Data in the Politician table is currently populated/saved by running 'rake db:seed' in the terminal, which does an API call that hardwires in the reps from zipcode 12009##	
