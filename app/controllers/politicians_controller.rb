@@ -8,6 +8,8 @@ class PoliticiansController < ApplicationController
 		else
 			api_mode = "query"
 		end 
+
+		
 		
 		if api_mode == "zip"
 
@@ -28,7 +30,7 @@ class PoliticiansController < ApplicationController
 			politicians_zip_hash.each do |politician|
 				
 				@politicians_zip << Politician.new(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"])
-			end
+				end
 
 			#checks for when the user first gets to the page
 			if politicians_zip_hash.count != 0
@@ -93,7 +95,7 @@ class PoliticiansController < ApplicationController
 	end
 
 	def show
-	
+		@politician_twitter_hash = Politician.twitter_widget_id
 		@politician = Politician.find(params[:id])
 		@queries = ["jobs", "health", "education"]
 		@ideologies = {}
@@ -113,4 +115,4 @@ class PoliticiansController < ApplicationController
 
 
 	end
-end
+end	
