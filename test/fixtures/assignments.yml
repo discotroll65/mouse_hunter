@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  politician_id: 1
+  committee_id: 1
+
+two:
+  politician_id: 1
+  committee_id: 1
