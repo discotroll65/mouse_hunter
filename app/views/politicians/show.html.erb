@@ -61,11 +61,9 @@
 	<%= form_tag politicians_path, :method => 'GET' do %>
 		<%= text_field_tag 'q' %>
 		<%= submit_tag 'SEARCH' %> 
-<<<<<<< HEAD
+
 	<% end %>
-=======
-		<% end %>
->>>>>>> 3a42cdeba64099d8ac82db5d09425ff8eb1da675
+
 
 <div class="quick_facts">
 	<ul>
@@ -106,16 +104,59 @@
 
 <div id="donors">
 	<div id="donutchart" style="width: 600px; height: 300px;"></div>
+
 </div>
 
 <div id="fundraising_campaigns">
 </div>
 
 <div id="ideology">
+	<table>
+		<tr>
+			<th colspan="3">
+				<h3>Ideology Based On Votes</h3>
+			</th>
+		</tr>
+		<tr>
+			<th>issue</th>
+			<th>bill</th>
+			<th>vote</th>
+		</tr>
+
+		<%= @ideologies.each do |key, value| %>
+			<tr>
+				<td>query</td>
+				<td>key</td>
+				<td>value</td>
+			</tr>
+		<% end %>
+		
+		<tr>
+			<td>@politcians.get_ideology("jobs")</td>
+			<td>Housing Project #8728</td>
+			<td>yea</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Worker's Pension Plan</td>
+			<td>nay</td>
+		</tr>
+
+	</table>
+
 </div>
 
 <div id="legislation">
-
+	<h3>Number of Sponsored Bills</h3>
+	<%= @politician.sponsored_bills.count %>
+	<h3>Most Recent Sponsored Bills</h3>
+		<ul>
+			<% 0.upto(9) do |number| %>
+				<li><%= link_to @politician.sponsored_bills[number].title, @politician.sponsored_bills[number].url %>
+		
+				</li>
+			<% end %>
+		</ul>
 </div>
 
 </body>

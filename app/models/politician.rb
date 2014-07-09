@@ -81,7 +81,7 @@ class Politician < ActiveRecord::Base
     parsed_bill_info["results"].each do |bill|
         bills_sponsored << Bill.create(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
-              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}")
+              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"])
         #add later --description: "URL for description: #{bill["urls"]["govtrack"]}"
     end
 
@@ -95,7 +95,7 @@ class Politician < ActiveRecord::Base
         parsed_bill_info_loop["results"].each do |bill|
           bills_sponsored << Bill.create(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
-              }" ] , issue: bill["committee_ids"][0], status: "enacted? " + "#{bill["history"]["enacted"]}")
+              }" ] , issue: bill["committee_ids"][0], status: "enacted? " + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"])
         end
       end
 
@@ -103,9 +103,43 @@ class Politician < ActiveRecord::Base
 
 
     self.sponsored_bills = bills_sponsored
-
-
   end
+
+  def get_ideology(query)
+      bill_id_array = []
+      votes_for_bills_of_query = []
+      bills_with_votes = {}
+      
+      # get four of the bills with the given issue/query
+
+      bills_under_query = RestClient.get("https://congress.api.sunlightfoundation.com/bills/search?query=#{query}&history.enacted=true&apikey=64177a5c45dc44eb8752332b15fb89bf")
+      parsed_bills_under_query = JSON.parse(bills_under_query)
+      results = parsed_bills_under_query["results"]
+      results.each_with_index do |bill, index|
+        bill_id_array << bill["bill_id"]
+      end
+
+      # use 4 bill ids in the a new api hit 
+      bill_id_array.each do |bill_id|
+        rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?voter_ids.#{self.bioguide_id}__exists=true&fields=voter_ids,bill_id=#{bill_id}&apikey=64177a5c45dc44eb8752332b15fb89bf")
+        parsed_rounds = JSON.parse(rounds)
+        results = parsed_rounds["results"]
+        votes_for_bills_of_query << results[0]["voter_ids"][self.bioguide_id]
+        bills_with_votes[bill_id] = results[0]["voter_ids"][self.bioguide_id]
+      end
+
+
+      #returns an array of strings that say "yea" or "nay"
+      votes_for_bills_of_query
+      bills_with_votes
+      binding.pry
+
+      # with every uniq bill id get the vote of the @politician.id
+    
+      # i want a hash with the bill id as the key from the bill id array and the vote as the value
+
+    end
+
 
 
 
@@ -126,7 +160,6 @@ class Politician < ActiveRecord::Base
                 	"#{self}th"
             end
         end
-
    end
 
    def symbol

@@ -39,12 +39,25 @@ class PoliticiansController < ApplicationController
 		end
 
 
+
 		#binding.pry
 	end
 
 	def show
 		@politician = Politician.find(params[:id])
+		@queries = ["jobs"]
+		# , "health", "education", "economy", "energy", "transportation", "veteran", "security", "environment", "agriculture", "women", "minority", "budget", "tax"
+		@ideologies = {}
+		@queries.each_with_index do |query, index|
+			# ideologies is an array with each element being an array of strings that represent votes to four bills
+			# looks like this {01 => ["yea","nay", "yeah", "nay"],["yea","nay", "yeah", "nay"]}
+			@ideologies[index] = @politician.get_ideology(query)
+			binding.pry
+		end
+		
 		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
 		@counts = Donor.distinct.group(:industry).count
+		
+
 	end
 end

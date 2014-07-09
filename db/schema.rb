@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140706141227) do
+ActiveRecord::Schema.define(version: 20140708141120) do
 
   create_table "bills", force: true do |t|
     t.string   "title"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20140706141227) do
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "official_title"
+    t.string   "url"
   end
 
   create_table "donors", force: true do |t|
