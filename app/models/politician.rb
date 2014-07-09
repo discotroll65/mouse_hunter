@@ -30,9 +30,36 @@ class Politician < ActiveRecord::Base
     politicians
   end
 
+  # CHecks to see if the query input is an interger (meaning a zipcode)
+
   def self.is_i?(query)
        !!(query =~ /\A[-+]?[0-9]+\z/)
   end
+
+# This is a hash of all the demo politicians and their assigned twitter_widget_id 
+
+def self.twitter_widget_id
+    politicians = {
+      "Brad Sherman" => "486908157516476417",
+      "Barbara Boxer" => "486825057671335937", 
+      "Diane Feinstein" => "486908613877719041",
+      "Patrick Toomey" => "486909225101037568",
+      "Allyson Schwartz" => "486933279988129793",
+      "Chaka Fattah" => "486937089607348224",
+      "Robert Casey" => "486937489819435009" 
+
+    }
+
+
+end
+
+def get_twitter_id(politician_twitter_hash, politician)
+  politician_twitter_hash.each do |name, data_widget_id| 
+      name = politician.name 
+      data_widget_id
+  end   
+end 
+
 
 
   #This goes over an array returned by the method "get_politicians_by_zip", which contains hashes of politicians, and then creates active records of them using various API pulls. It also generates all the bills a politician has sponsored. A validate uniqueness in the politician and bill models make sure that duplicates don't happen. Method returns an array of Active records.
