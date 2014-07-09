@@ -117,26 +117,20 @@
 			<th>bill</th>
 			<th>vote</th>
 		</tr>
-
-		<%= @ideologies.each do |key, value| %>
-			<tr>
-				<td>query</td>
-				<td>key</td>
-				<td>value</td>
-			</tr>
-		<% end %>
-		
-		<tr>
-			<td>@politcians.get_ideology("jobs")</td>
-			<td>Housing Project #8728</td>
-			<td>yea</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>Worker's Pension Plan</td>
-			<td>nay</td>
-		</tr>
-
+		<% @ideologies.each do |issue, votes_hash| %>
+				<% votes_hash.each_with_index do |(bill_id, vote), index| %>
+					<tr>
+						<% if index == 0 %>
+							<td rowspan=<%= votes_hash.si
+							ze %> class="issue">
+								<%= issue %> 
+							</td>
+						<% end %>
+						<td><%= bill_id %></td>
+						<td><%= vote %> </td>
+					</tr>
+			<% end %>	
+		<% end %>	
 	</table>
 
 </div>
