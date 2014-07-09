@@ -10,7 +10,7 @@ class Politician < ActiveRecord::Base
   has_many :donors, :through => :lobbies
   has_many :sponsored_bills, :through => :sponsorships, :source => :bill, :dependent => :destroy
   has_many :voted_bills, :through => :pvotes, :source => :bill
-
+  validates_uniqueness_of :congress_cid
 	
   def self.get_politicians_by_zip(zip)
 		#binding.pry
@@ -50,6 +50,7 @@ class Politician < ActiveRecord::Base
       #Gets all the data for Politician record from NYT
      Politician.last.get_info_from_NYT
      Politician.last.get_campaign_finance
+     Politician.last.get_committee_info
     end
 
     politician_active_records
@@ -183,7 +184,6 @@ class Politician < ActiveRecord::Base
 		end
 	end
 
-	validates_uniqueness_of :congress_cid
 
 
 
@@ -202,12 +202,37 @@ class Politician < ActiveRecord::Base
 
 
 
+  def get_committee_info
+    #use API to get the committee info about the congress person
+    committee_info = RestClient.get("http://congress.api.sunlightfoundation.com/committees?member_ids=#{self.bioguide_id}&apikey=#{ENV["SUNLIGHT_API"]}")
+    parsed_committee_info = JSON.parse(committee_info)
 
+    #initialize committee array
+    congress_reps_committees = []
 
+    #go through each committee, suck out name and code, shovel into congress _reps_committees
+    parsed_committee_info["results"].each do |committee|
+      #checks if there is a sub committee
+      subcommittee_status = "false"
 
+      if committee["committee_id"].length > 4
+        subcommittee_status = "true"
+      end
 
+        #Shovels committees in as unsaved instances
+      congress_reps_committees << Committee.new(name: committee["name"], committee_code: committee["committee_id"], is_subcommittee: subcommittee_status)
+    end
 
+    #go through each committee, save it if it doesn't already exist, associate it with politician
+    congress_reps_committees.each do |committee_record|
+      if committee_record.save
+        self.committees << Committee.last 
+        else
+        self.committees << Committee.where(:name => committee_record.name) 
+      end
+    end
 
+  end
 
 
 
@@ -224,31 +249,7 @@ class Politician < ActiveRecord::Base
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+########CAMPAIGN FINANCE STARTS AT LINE 252
   def get_campaign_finance
     campaign_entered = "2012"
     #API to get summary of how much the politician raised last cycle
