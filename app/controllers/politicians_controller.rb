@@ -95,7 +95,7 @@ class PoliticiansController < ApplicationController
 	def show
 	
 		@politician = Politician.find(params[:id])
-		@queries = ["jobs", "health", "education", "economy", "energy"]
+		@queries = ["jobs", "health", "education"]
 		@ideologies = {}
 		@queries.each do |query, index|
 			# ideologies is a hash with a key that is the query and a valeu that is a hash (keys are bill ids and values are votes)
