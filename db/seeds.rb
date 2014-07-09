@@ -21,7 +21,7 @@
 
 
 		Donor.create(name: "Koch Brothers", industry: "sugar")
-		Donor.create(name: "Google", industry: "techr")
+		Donor.create(name: "Google", industry: "tech")
 		Donor.create(name: "Exxon", industry: "oil")
 		Donor.create(name: "Dropbox", industry: "tech")
 		Donor.create(name: "Facebook", industry: "tech")

@@ -20,6 +20,20 @@ class Politician < ActiveRecord::Base
 		politicians
 	end
 
+  def self.get_politicians_by_query(query)
+    #binding.pry
+    
+    response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators?query=#{query}&apikey=#{ENV["SUNLIGHT_API"]}")
+    parsed_response = JSON.parse(response)
+    politicians = parsed_response["results"]
+    #binding.pry
+    politicians
+  end
+
+  def self.is_i?(query)
+       !!(query =~ /\A[-+]?[0-9]+\z/)
+  end
+
 
   #This goes over an array returned by the method "get_politicians_by_zip", which contains hashes of politicians, and then creates active records of them using various API pulls. It also generates all the bills a politician has sponsored. A validate uniqueness in the politician and bill models make sure that duplicates don't happen. Method returns an array of Active records.
     

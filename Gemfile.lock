@@ -128,7 +128,13 @@ GEM
       patron (>= 0.4.6)
 
 PLATFORMS
+  bootstrap-unknown
+  coffee-unknown
+  jquery-unknown
+  rest-unknown
   ruby
+  sass-unknown
+  unknown
 
 DEPENDENCIES
   bootstrap-sass
