@@ -3,35 +3,48 @@
 
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,300italic,400italic,500' rel='stylesheet' type='text/css'>
 
-<h1>Please enter your zipcode to find your representatives</h1>
-
-
-	<%= form_tag("/politicians", method: "get") do  %>
-		<%= label_tag(:zipcode, "Enter zipcode:")  %>
-		<%= text_field_tag(:zipcode)  %>
-		<%= submit_tag("Search") %>
-
-	<%  end %>
-
 
 <div class="display_politicians">
 
 	<ul class="list_of_local">
-	<% @politicians_zip.each do |politician| %>
-		
+		<% if @query == nil %>
+			<% @politicians_zip.each do |politician| %>
+			
 				<li class="link">
 				<!-- can make this faster later with Politician.where(:last_name => Politician.get_politicians(12009)[0]["last_name"]) -->
 
-				<% unless politician.id == nil %>
-					<%= link_to politician.name, politician_path(politician.id) %>
-				<% else %>
+					<% unless politician.id == nil %>
+						<%= link_to politician.name, politician_path(politician.id) %>
+						<% else %>
 					
-					<%= link_to politician.name, politician_path(Politician.where(:name => politician.name)[0].id) %>
+						<%= link_to politician.name, politician_path(Politician.where(:name => politician.name)[0].id) %>
 
-				<% end %>
-			</li>
-		
-	<% end %>
+					<% end %>
+
+				</li>
+			
+			<% end %>
+
+		<% elsif %>
+
+			<% @politicians_query.each do |politician| %>
+			
+				<li class="link">
+				<!-- can make this faster later with Politician.where(:last_name => Politician.get_politicians(12009)[0]["last_name"]) -->
+
+					<% unless politician.id == nil %>
+						<%= link_to politician.name, politician_path(politician.id) %>
+						<% else %>
+					
+						<%= link_to politician.name, politician_path(Politician.where(:name => politician.name)[0].id) %>
+
+					<% end %>
+
+				</li>
+			
+			<% end %>
+		<% end %>	
+
 	</ul>
 
 	<h1>These are your searched for representatives in Congress</h1>
