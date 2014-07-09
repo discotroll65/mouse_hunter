@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  committee_code: MyString
+  is_subcommittee: MyString
+
+two:
+  name: MyString
+  committee_code: MyString
+  is_subcommittee: MyString

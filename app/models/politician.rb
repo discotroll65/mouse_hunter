@@ -4,6 +4,8 @@ class Politician < ActiveRecord::Base
   has_many :sponsorships
   has_many :pvotes
   has_many :influences
+  has_many :assignments
+  has_many :committees, :through => :assignments
   has_many :lobbies, :through => :influences
   has_many :donors, :through => :lobbies
   has_many :sponsored_bills, :through => :sponsorships, :source => :bill, :dependent => :destroy
