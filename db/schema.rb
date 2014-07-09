@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140706141227) do
+ActiveRecord::Schema.define(version: 20140708171329) do
 
   create_table "bills", force: true do |t|
     t.string   "title"
@@ -28,13 +28,20 @@ ActiveRecord::Schema.define(version: 20140706141227) do
     t.datetime "updated_at"
   end
 
-  create_table "lobbies", force: true do |t|
-    t.integer  "politician_id"
-    t.integer  "donor_id"
-    t.integer  "money_given"
+  create_table "influences", force: true do |t|
+    t.string   "money_given"
     t.string   "campaign_cycle"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "politician_id"
+    t.integer  "lobby_id"
+  end
+
+  create_table "lobbies", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "industry_code"
+    t.string   "industry_name"
   end
 
   create_table "politicians", force: true do |t|

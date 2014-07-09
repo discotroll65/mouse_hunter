@@ -44,6 +44,7 @@ class PoliticiansController < ApplicationController
 
 	def show
 		@politician = Politician.find(params[:id])
-		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
+		# @donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20]):title => @title, :labels => @legend, :data => @data, :size => '400x200'
+		@donors_bar_graph = Gchart.pie(:data => [25, 25, 25])
 	end
 end

@@ -3,7 +3,8 @@
 class Politician < ActiveRecord::Base
   has_many :sponsorships
   has_many :pvotes
-  has_many :lobbies
+  has_many :influences
+  has_many :lobbies, :through => :influences
   has_many :donors, :through => :lobbies
   has_many :sponsored_bills, :through => :sponsorships, :source => :bill, :dependent => :destroy
   has_many :voted_bills, :through => :pvotes, :source => :bill
@@ -20,7 +21,7 @@ class Politician < ActiveRecord::Base
 	end
 
 
-#This goes over an array returned by the method "get_politicians_by_zip", which contains hashes of politicians, and then creates active records of them using various API pulls. It also generates all the bills a politician has sponsored. A validate uniqueness in the politician and bill models make sure that duplicates don't happen. Method returns an array of Active records.
+  #This goes over an array returned by the method "get_politicians_by_zip", which contains hashes of politicians, and then creates active records of them using various API pulls. It also generates all the bills a politician has sponsored. A validate uniqueness in the politician and bill models make sure that duplicates don't happen. Method returns an array of Active records.
     
   def self.get_all_data_for_politicians(array_of_politician_hashes)
     #initialize array to be returned
@@ -32,6 +33,7 @@ class Politician < ActiveRecord::Base
       #binding.pry
       #Gets all the data for Politician record from NYT
      Politician.last.get_info_from_NYT
+     Politician.last.get_campaign_finance
     end
 
     politician_active_records
@@ -71,7 +73,7 @@ class Politician < ActiveRecord::Base
     #Get bills this politician has sponsored
     bills_sponsored = []
 
-    bill_info = RestClient.get("http://congress.api.sunlightfoundation.com/bills?sponsor_id=#{self.bioguide_id}&apikey=64177a5c45dc44eb8752332b15fb89bf&page=1")
+    bill_info = RestClient.get("http://congress.api.sunlightfoundation.com/bills?sponsor_id=#{self.bioguide_id}&apikey=#{ENV["SUNLIGHT_API"]}&page=1")
     parsed_bill_info = JSON.parse(bill_info)
 
     #count how many pages there are
@@ -101,6 +103,11 @@ class Politician < ActiveRecord::Base
 
     end
 
+    ######      @counts = Donor.distinct.group(:industry).count
+
+    ######      Bill.new(title: bill["#{bill["short_title"] ? "short_title" : "official_title"}" ] , issue: bill["committee_ids"][0], status: "enacted? " + "#{bill["history"]["enacted"]}")
+
+    #binding.pry
 
     self.sponsored_bills = bills_sponsored
 
@@ -163,4 +170,105 @@ class Politician < ActiveRecord::Base
 	validates_uniqueness_of :congress_cid
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  def get_campaign_finance
+    campaign_entered = "2012"
+    #API to get summary of how much the politician raised last cycle
+   
+    response = RestClient.get("http://www.opensecrets.org/api/?method=candSummary&cid=#{self.congress_cid}&cycle=2012&apikey=#{ENV["OPENSECRETS_API"]}&output=json")
+
+    parsed_response = JSON.parse(response)
+
+    #gets the amount of money the candidate raised last election
+    total_money_raised = parsed_response["response"]["summary"]["@attributes"]["total"]
+    self.update_attributes(money_raised: total_money_raised)
+
+    #API to get top industries contributing to a politician
+    contributers_info = RestClient.get("http://www.opensecrets.org/api/?method=candIndustry&cid=#{self.congress_cid}&cycle=#{campaign_entered}&apikey=#{ENV["OPENSECRETS_API"]}&output=json")
+    parsed_contributers_info = JSON.parse(contributers_info)
+
+    campaign_contributers = []
+
+    #go through industries that have donated to the politician
+    parsed_contributers_info["response"]["industries"]["industry"].each do |industry|
+        
+      lobby_instance = Lobby.new(industry_code: industry["@attributes"]["industry_code"], industry_name: industry["@attributes"]["industry_name"])
+        
+      if lobby_instance.save
+        self.lobbies << Lobby.last
+        Influence.last.update_attributes(:campaign_cycle => campaign_entered, :money_given => industry["@attributes"]["total"])
+      else
+        self.lobbies << Lobby.where(:industry_code => lobby_instance.industry_code)
+        Influence.last.update_attributes(:campaign_cycle => campaign_entered, :money_given => industry["@attributes"]["total"])
+      end
+        #add later --description: "URL for description: #{bill["urls"]["govtrack"]}"
+    end
+  end
+
 end
+
+
+
+
