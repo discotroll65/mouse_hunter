@@ -88,18 +88,31 @@ class PoliticiansController < ApplicationController
 				end
 			end
 
+
 		end	
 			#binding.pry
+
 	end
 
 	def show
 		@politician_twitter_hash = Politician.twitter_widget_id
 		@politician = Politician.find(params[:id])
+		@queries = ["jobs", "health", "education", "economy", "energy"]
+		@ideologies = {}
+		@queries.each do |query, index|
+			# ideologies is a hash with a key that is the query and a valeu that is a hash (keys are bill ids and values are votes)
+			@ideologies[query] = @politician.get_ideology(query)
+			
+		end
+		
+		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
+		@counts = Donor.distinct.group(:industry).count
 
 		# @donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20]):title => @title, :labels => @legend, :data => @data, :size => '400x200'
 		
 		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
 		@counts = Donor.distinct.group(:industry).count
+
 
 	end
 end	

@@ -4,11 +4,13 @@ class Politician < ActiveRecord::Base
   has_many :sponsorships
   has_many :pvotes
   has_many :influences
+  has_many :assignments
+  has_many :committees, :through => :assignments
   has_many :lobbies, :through => :influences
   has_many :donors, :through => :lobbies
   has_many :sponsored_bills, :through => :sponsorships, :source => :bill, :dependent => :destroy
   has_many :voted_bills, :through => :pvotes, :source => :bill
-
+  validates_uniqueness_of :congress_cid
 	
   def self.get_politicians_by_zip(zip)
 		#binding.pry
@@ -75,6 +77,7 @@ end
       #Gets all the data for Politician record from NYT
      Politician.last.get_info_from_NYT
      Politician.last.get_campaign_finance
+     Politician.last.get_committee_info
     end
 
     politician_active_records
@@ -124,7 +127,7 @@ end
     parsed_bill_info["results"].each do |bill|
         bills_sponsored << Bill.create(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
-              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}")
+              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"])
         #add later --description: "URL for description: #{bill["urls"]["govtrack"]}"
     end
 
@@ -138,7 +141,7 @@ end
         parsed_bill_info_loop["results"].each do |bill|
           bills_sponsored << Bill.create(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
-              }" ] , issue: bill["committee_ids"][0], status: "enacted? " + "#{bill["history"]["enacted"]}")
+              }" ] , issue: bill["committee_ids"][0], status: "enacted? " + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"])
         end
       end
 
@@ -151,9 +154,41 @@ end
     #binding.pry
 
     self.sponsored_bills = bills_sponsored
-
-
   end
+
+  def get_ideology(query)
+      bill_id_array = []
+      short_title_array = []
+      votes_for_bills_of_query = []
+      bills_with_votes = {}
+      
+      # get four of the bills with the given issue/query
+
+      bills_under_query = RestClient.get("https://congress.api.sunlightfoundation.com/bills/search?query=#{query}&history.enacted=true&apikey=64177a5c45dc44eb8752332b15fb89bf")
+      parsed_bills_under_query = JSON.parse(bills_under_query)
+      results = parsed_bills_under_query["results"]
+      results.each_with_index do |bill, index|
+        bill_id_array << bill["bill_id"]
+        short_title_array << bill["short_title"]
+      end
+
+      # use 4 bill ids in the a new api hit 
+      bill_id_array.each_with_index do |bill_id, index|
+        rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?voter_ids.#{self.bioguide_id}__exists=true&fields=voter_ids,bill_id=#{bill_id}&apikey=64177a5c45dc44eb8752332b15fb89bf")
+        parsed_rounds = JSON.parse(rounds)
+        results = parsed_rounds["results"]
+        votes_for_bills_of_query << results[0]["voter_ids"][self.bioguide_id]
+        bills_with_votes[short_title_array[index]] = results[0]["voter_ids"][self.bioguide_id]
+        # results[this might have to be zero again]
+      end
+    
+      
+      votes_for_bills_of_query
+      bills_with_votes
+      
+
+    end
+
 
 
 
@@ -174,7 +209,6 @@ end
                 	"#{self}th"
             end
         end
-
    end
 
    def symbol
@@ -208,70 +242,41 @@ end
 		end
 	end
 
+
 	validates_uniqueness_of :congress_cid
 
 
+  def get_committee_info
+    #use API to get the committee info about the congress person
+    committee_info = RestClient.get("http://congress.api.sunlightfoundation.com/committees?member_ids=#{self.bioguide_id}&apikey=#{ENV["SUNLIGHT_API"]}")
+    parsed_committee_info = JSON.parse(committee_info)
 
+    #initialize committee array
+    congress_reps_committees = []
 
+    #go through each committee, suck out name and code, shovel into congress _reps_committees
+    parsed_committee_info["results"].each do |committee|
+      #checks if there is a sub committee
+      subcommittee_status = "false"
 
+      if committee["committee_id"].length > 4
+        subcommittee_status = "true"
+      end
 
+        #Shovels committees in as unsaved instances
+      congress_reps_committees << Committee.new(name: committee["name"], committee_code: committee["committee_id"], is_subcommittee: subcommittee_status)
+    end
 
+    #go through each committee, save it if it doesn't already exist, associate it with politician
+    congress_reps_committees.each do |committee_record|
+      if committee_record.save
+        self.committees << Committee.last 
+        else
+        self.committees << Committee.where(:name => committee_record.name) 
+      end
+    end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  end
 
 
   def get_campaign_finance

@@ -161,5 +161,23 @@ header {
 	}
 }
 
+/* IDEOLOGY */
+
+.issue:nth-of-type(odd) {
+		background-color: lightblue;
+}
+
+table {
+	font-family:'Lato';
+
+	th {
+		padding: 20px;
+	}
+
+	td {
+		padding: 20px;
+	}
+}
+
 
 
