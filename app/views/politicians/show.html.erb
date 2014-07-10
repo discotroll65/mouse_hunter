@@ -22,9 +22,9 @@
 
     function drawChart() {
 
-        // Create the data table.
+      // Create the data table.
         var data = google.visualization.arrayToDataTable( [
-  		  ['industry', 'companies'],
+  		  ['Industry', 'Money Donated'],
           <% @counts.each_with_index do |(industry, count), index| %>
         		[ '<%=industry%>', <%=count%> ]<%="," unless index == @counts.size - 1 %>
         	<% end %>
@@ -32,14 +32,14 @@
 
 	    // Set chart options
 	    var options = {
-	    	title:'donors by industry',
+	    	title: '<%="Donors from the #{@politician.influences[0].campaign_cycle} Campaign Cycle, by top 10 industries" %>' ,
 	    	titleTextStyle: {color:'black', fontName: 'Open Sans', fontSize: 14},
 	        pieHole: .4,
 	        colors: ['#FFCB9E', '#FF4A4A', '#FF6200', '#FF8833', '#FF7B0F'],
 	        fontName: "Lato",
 	        legend: {position:'none'},
 	        pieSliceTextStyle: {color:"white", fontName:"Open Sans"},
-	        pieSliceText: 'label',
+	        
 	        chartArea: {left:20}
 	    };
 
@@ -135,16 +135,13 @@
 	<div id="fundraising_campaigns">
 	</div>
 
-<div id="donors">
+<div id="fundraising">
 	<div id="donutchart" style="width: 600px; height: 300px;"></div>
+	<h4>Total money raised in the last campaign<h4>
+	<p><%=@politician.money_raised %></p>
 
 </div>
 
-	<div id="ideology">
-	</div>
-
-	<div id="legislation">
-	</div>
 
 	<div id="Twitter_intergration">
 		
@@ -157,29 +154,35 @@
 <div id="ideology">
 	<table>
 		<tr>
-			<th colspan="3">
-				<h3>Ideology Based On Votes</h3>
-			</th>
+			<th>ISSUE</th>
+			<th>BILL</th>
+			<th>VOTE</th>
 		</tr>
-		<tr>
-			<th>issue</th>
-			<th>bill</th>
-			<th>vote</th>
-		</tr>
+	
 		<% @ideologies.each do |issue, votes_hash| %>
 				<% votes_hash.each_with_index do |(bill_id, vote), index| %>
 					<tr>
 						<% if index == 0 %>
-							<td rowspan=<%= votes_hash.size %> class="issue">
+
+							<td rowspan=<%= votes_hash.size %> class="<%= cycle("odd", "even") %>">
+
 								<%= issue %> 
 							</td>
 						<% end %>
-						<td><%= bill_id %></td>
-						<td><%= vote %> </td>
+						<td class="<%= cycle("odd_bills", "even_bills") %>"><%= bill_id %></td>
+						<% if vote == "Yea"%>
+							<td ><%= image_tag "checkmark.jpg", id: "checkmark" %></td>
+						<% elsif vote == "Nay" %>
+							<td><%= image_tag "deny.jpg", id: "deny" %> </td>
+						<% elsif vote == "Not Voting" %>
+							<td><%= image_tag "exclamation.jpg", id: "exclamation" %> </td>
+						<% end %>
 					</tr>
 			<% end %>	
 		<% end %>	
 	</table>
+
+	<div>Votes with the party <% @politician.votes_with_party_pct %>% of the time</div>
 
 </div>
 
@@ -197,6 +200,23 @@
 		</ul>
 
 </div>
+
+
+
+<div id="committees">
+		<h1> Committees Serving on : </h1>
+		<ul>
+			<% @politician.committees.each do |committee| %>
+			
+			<%if committee.is_subcommittee == "true" %>
+				<li>
+					<h3> <%= "#{committee.name} " %> </h3> 
+				</li>
+			<%end%>
+			
+			<%end%>
+		</ul>
+	</div>
 
 
 

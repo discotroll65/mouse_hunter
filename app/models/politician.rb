@@ -11,16 +11,16 @@ class Politician < ActiveRecord::Base
   has_many :sponsored_bills, :through => :sponsorships, :source => :bill, :dependent => :destroy
   has_many :voted_bills, :through => :pvotes, :source => :bill
   validates_uniqueness_of :congress_cid
-	
+  
   def self.get_politicians_by_zip(zip)
-		#binding.pry
-		
-		response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators/locate?zip=#{zip}&apikey=#{ENV["SUNLIGHT_API"]}")
-		parsed_response = JSON.parse(response)
-		politicians = parsed_response["results"]
     #binding.pry
-		politicians
-	end
+    
+    response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators/locate?zip=#{zip}&apikey=#{ENV["SUNLIGHT_API"]}")
+    parsed_response = JSON.parse(response)
+    politicians = parsed_response["results"]
+    #binding.pry
+    politicians
+  end
 
   def self.get_politicians_by_query(query)
     #binding.pry
@@ -75,16 +75,24 @@ end
       politician_active_records << Politician.create(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"], district: politician["district"], state: politician["state"], title: politician["title"], twitter_id: politician["twitter_id"], in_office: politician["in_office"], contact_form: politician["contact_form"], party: politician["party"], congress_cid: politician["crp_id"], chamber: politician["chamber"], bioguide_id: politician["bioguide_id"])
       #binding.pry
       #Gets all the data for Politician record from NYT
-     Politician.last.get_info_from_NYT
-     Politician.last.get_campaign_finance
-     Politician.last.get_committee_info
+      Politician.last.get_info_from_NYT
+      Politician.last.get_campaign_finance
+      Politician.last.get_committee_info
+        @queries = ["jobs", "health", "education"]
+        @ideologies = {}
+
+        @queries.each do |query|
+          # ideologies is a hash with a key that is the query and a valeu that is a hash (keys are bill ids and values are votes)
+          @ideologies[query] = Politician.last.get_ideology(query)
+          
+        end
     end
 
     politician_active_records
   end
 
   #instance method that updates that instance's info using api calls from the sunlight foundation and NYT apis
-	def get_info_from_NYT
+  def get_info_from_NYT
     #binding.pry
 
     response = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.chamber}/#{self.state}/#{self.district}/current.json?api-key=#{ENV["NYT_API"]}")
@@ -161,31 +169,49 @@ end
       short_title_array = []
       votes_for_bills_of_query = []
       bills_with_votes = {}
+      bills_voted = []
       
       # get four of the bills with the given issue/query
 
-      bills_under_query = RestClient.get("https://congress.api.sunlightfoundation.com/bills/search?query=#{query}&history.enacted=true&apikey=64177a5c45dc44eb8752332b15fb89bf")
+      bills_under_query = RestClient.get("https://congress.api.sunlightfoundation.com/bills/search?query=#{query}&congress=113&history.enacted=true&apikey=#{ENV["SUNLIGHT_API"]}")
       parsed_bills_under_query = JSON.parse(bills_under_query)
       results = parsed_bills_under_query["results"]
-      results.each_with_index do |bill, index|
+      results[0,3].each do |bill|
+
+        bill_instance = Bill.new(title: bill["#{
+          bill["short_title"] ? "short_title" : "official_title"
+          }" ] , issue: query, status: "enacted?" + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"], bill_id: bill["bill_id"], congress: bill["congress"], voted_on: "yes")
+
+        rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?&bill_id=#{bill["bill_id"]}&fields=voter_ids&apikey=#{ENV["SUNLIGHT_API"]}")
+        parsed_rounds = JSON.parse(rounds)
+        round_results = parsed_rounds["results"]
+
+        if bill_instance.save
+          self.voted_bills << bill_instance
+          Pvote.last.update_attributes(issue: query, vote: round_results[0]["voter_ids"][self.bioguide_id])
+        else
+          self.voted_bills << Bill.where(bill_id: bill["bill_id"])
+          Pvote.last.update_attributes(issue: query, vote: round_results[0]["voter_ids"][self.bioguide_id])
+        end
         bill_id_array << bill["bill_id"]
         short_title_array << bill["short_title"]
+          
       end
+
+
 
       # use 4 bill ids in the a new api hit 
       bill_id_array.each_with_index do |bill_id, index|
-        rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?voter_ids.#{self.bioguide_id}__exists=true&fields=voter_ids,bill_id=#{bill_id}&apikey=64177a5c45dc44eb8752332b15fb89bf")
+        rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?&bill_id=#{bill_id}&fields=voter_ids&apikey=#{ENV["SUNLIGHT_API"]}")
         parsed_rounds = JSON.parse(rounds)
         results = parsed_rounds["results"]
         votes_for_bills_of_query << results[0]["voter_ids"][self.bioguide_id]
         bills_with_votes[short_title_array[index]] = results[0]["voter_ids"][self.bioguide_id]
-        # results[this might have to be zero again]
       end
     
       
       votes_for_bills_of_query
       bills_with_votes
-      
 
     end
 
@@ -193,57 +219,57 @@ end
 
 
 
-	def ordinalize
-		number = self.to_i
+  def ordinalize
+    number = self.to_i
         if (11..13).include?(number % 100)
                 "#{self}th"
         else
             case number % 10
                 when 1 
-                	"#{self}st"
+                  "#{self}st"
                 when 2 
-                	"#{self}nd"
+                  "#{self}nd"
                 when 3 
-                	"#{self}rd"
+                  "#{self}rd"
                 else   
-                	"#{self}th"
+                  "#{self}th"
             end
         end
    end
 
    def symbol
-   		if self.party_finder == "democrat"
-   			return "donkey.png"
-   		elsif self.party_finder == "republican"
-   			return "elephant.png"
-   		else 
-   			" "
-   		end
+      if self.party_finder == "democrat"
+        return "donkey.png"
+      elsif self.party_finder == "republican"
+        return "elephant.png"
+      else 
+        " "
+      end
    end
 
    def party_finder
-   		party_letter = self.party
-		if party_letter[0] == "D"
-			"democrat"
-		elsif party_letter[0] == "R"
-			"republican"
-		elsif party_letter[0] == "I"
-			"independent"
-		else
-			" "
-		end
+      party_letter = self.party
+    if party_letter[0] == "D"
+      "democrat"
+    elsif party_letter[0] == "R"
+      "republican"
+    elsif party_letter[0] == "I"
+      "independent"
+    else
+      " "
+    end
    end
 
     def check_if_senator
-	    if self.district
-	   		"'s " + "#{self.district.to_i.ordinalize}" + " district"
-		else 
-			" "
-		end
-	end
+      if self.district
+        "'s " + "#{self.district.to_i.ordinalize}" + " district"
+    else 
+      " "
+    end
+  end
 
 
-	validates_uniqueness_of :congress_cid
+  validates_uniqueness_of :congress_cid
 
 
   def get_committee_info
