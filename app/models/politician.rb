@@ -173,7 +173,7 @@ end
       
       # get four of the bills with the given issue/query
 
-      bills_under_query = RestClient.get("https://congress.api.sunlightfoundation.com/bills/search?query=#{query}&history.enacted=true&apikey=64177a5c45dc44eb8752332b15fb89bf")
+      bills_under_query = RestClient.get("https://congress.api.sunlightfoundation.com/bills/search?query=#{query}&congress=113&history.enacted=true&apikey=#{ENV["SUNLIGHT_API"]}")
       parsed_bills_under_query = JSON.parse(bills_under_query)
       results = parsed_bills_under_query["results"]
       results[0,3].each do |bill|
@@ -202,7 +202,7 @@ end
 
       # use 4 bill ids in the a new api hit 
       bill_id_array.each_with_index do |bill_id, index|
-        rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?&bill_id=#{bill_id}&fields=voter_ids&apikey=64177a5c45dc44eb8752332b15fb89bf")
+        rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?&bill_id=#{bill_id}&fields=voter_ids&apikey=#{ENV["SUNLIGHT_API"]}")
         parsed_rounds = JSON.parse(rounds)
         results = parsed_rounds["results"]
         votes_for_bills_of_query << results[0]["voter_ids"][self.bioguide_id]
