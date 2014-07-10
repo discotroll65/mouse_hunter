@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140709113424) do
+ActiveRecord::Schema.define(version: 20140710025159) do
 
   create_table "assignments", force: true do |t|
     t.integer  "politician_id"
@@ -28,6 +28,9 @@ ActiveRecord::Schema.define(version: 20140709113424) do
     t.datetime "updated_at"
     t.string   "official_title"
     t.string   "url"
+    t.string   "bill_id"
+    t.string   "congress"
+    t.string   "voted_on"
   end
 
   create_table "committees", force: true do |t|
@@ -99,6 +102,7 @@ ActiveRecord::Schema.define(version: 20140709113424) do
     t.integer  "round"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "issue"
   end
 
   create_table "sponsorships", force: true do |t|

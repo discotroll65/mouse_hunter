@@ -24,7 +24,7 @@
 
       // Create the data table.
         var data = google.visualization.arrayToDataTable( [
-  		  ['industry', 'companies'],
+  		  ['Industry', 'Money Donated'],
           <% @counts.each_with_index do |(industry, count), index| %>
         		[ '<%=industry%>', <%=count%> ]<%="," unless index == @counts.size - 1 %>
         	<% end %>
@@ -32,14 +32,14 @@
 
 	    // Set chart options
 	    var options = {
-	    	title:'donors by industry',
+	    	title: '<%="Donors from the #{@politician.influences[0].campaign_cycle} Campaign Cycle, by top 10 industries" %>' ,
 	    	titleTextStyle: {color:'black', fontName: 'Open Sans', fontSize: 14},
 	        pieHole: .4,
 	        colors: ['#FFCB9E', '#FF4A4A', '#FF6200', '#FF8833', '#FF7B0F'],
 	        fontName: "Lato",
 	        legend: {position:'none'},
 	        pieSliceTextStyle: {color:"white", fontName:"Open Sans"},
-	        pieSliceText: 'label',
+	        
 	        chartArea: {left:20}
 	    };
 
@@ -158,6 +158,7 @@
 			<th>BILL</th>
 			<th>VOTE</th>
 		</tr>
+	
 		<% @ideologies.each do |issue, votes_hash| %>
 				<% votes_hash.each_with_index do |(bill_id, vote), index| %>
 					<tr>
@@ -200,106 +201,6 @@
 
 
 
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</body>
-
-
-
 <div id="committees">
 		<h1> Committees Serving on : </h1>
 		<ul>
@@ -314,3 +215,8 @@
 			<%end%>
 		</ul>
 	</div>
+
+
+
+
+</body>
