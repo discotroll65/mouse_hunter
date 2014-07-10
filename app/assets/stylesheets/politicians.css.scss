@@ -1,3 +1,24 @@
+#search_bar {
+	position:relative;
+	top:300px;
+	left:200px;
+}
+
+.rounded_search {
+	border-radius:15px; 
+	-moz-border-radius:15px; 
+	-webkit-border-radius:15px; 
+	background-color:rgba(0,0,0,.8);
+	border:none;
+	height:30px;
+	color:white;
+	font-family:'Lato';
+	font-weight:lighter;
+	padding:5px;
+}
+
+
+
 .display_politicians {
 	background-image: url('inside_house_copy.jpg');
 	background-repeat: no-repeat;

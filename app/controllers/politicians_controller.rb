@@ -88,7 +88,6 @@ class PoliticiansController < ApplicationController
 				end
 			end
 
-
 		end	
 			#binding.pry
 

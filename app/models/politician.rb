@@ -180,7 +180,6 @@ end
         votes_for_bills_of_query << results[0]["voter_ids"][self.bioguide_id]
         bills_with_votes[short_title_array[index]] = results[0]["voter_ids"][self.bioguide_id]
       end
-    
       
       votes_for_bills_of_query
       bills_with_votes
@@ -281,7 +280,7 @@ end
     campaign_entered = "2012"
     #API to get summary of how much the politician raised last cycle
    
-    response = RestClient.get("http://www.opensecrets.org/api/?method=candSummary&cid=#{self.congress_cid}&cycle=2012&apikey=#{ENV["OPENSECRETS_API"]}&output=json")
+    response = RestClient.get("http://www.opensecrets.org/api/?method=candSummary&cid=#{self.congress_cid}&cycle=2012&apikey=8bcaf847fa03a28d6b408db8a358111c&output=json")
 
     parsed_response = JSON.parse(response)
 
@@ -290,7 +289,7 @@ end
     self.update_attributes(money_raised: total_money_raised)
 
     #API to get top industries contributing to a politician
-    contributers_info = RestClient.get("http://www.opensecrets.org/api/?method=candIndustry&cid=#{self.congress_cid}&cycle=#{campaign_entered}&apikey=#{ENV["OPENSECRETS_API"]}&output=json")
+    contributers_info = RestClient.get("http://www.opensecrets.org/api/?method=candIndustry&cid=#{self.congress_cid}&cycle=#{campaign_entered}&apikey=8bcaf847fa03a28d6b408db8a358111c&output=json")
     parsed_contributers_info = JSON.parse(contributers_info)
 
     campaign_contributers = []
