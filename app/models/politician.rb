@@ -83,7 +83,9 @@ end
 
         @queries.each do |query|
           # ideologies is a hash with a key that is the query and a valeu that is a hash (keys are bill ids and values are votes)
+          #binding.pry
           @ideologies[query] = Politician.last.get_ideology(query)
+
           
         end
     end
@@ -165,56 +167,60 @@ end
   end
 
   def get_ideology(query)
-      bill_id_array = []
-      short_title_array = []
-      votes_for_bills_of_query = []
-      bills_with_votes = {}
-      bills_voted = []
-      
-      # get four of the bills with the given issue/query
+    bill_id_array = []
+    short_title_array = []
+    votes_for_bills_of_query = []
+    bills_with_votes = {}
+    bills_voted = []
+    
+    # get four of the bills with the given issue/query
+    if self.chamber == "house"
+      bill_url = "https://congress.api.sunlightfoundation.com/bills?query=#{query}&congress=113&history.house_passage_result=pass&apikey=#{ENV["SUNLIGHT_API"]}"
+    else
+      bill_url = "https://congress.api.sunlightfoundation.com/bills?query=#{query}&congress=113&history.senate_passage_result=pass&apikey=#{ENV["SUNLIGHT_API"]}"
+    end
 
-      bills_under_query = RestClient.get("https://congress.api.sunlightfoundation.com/bills?query=#{query}&congress=113&history.house_passage_result=pass&history.senate_passage_result=pass&apikey=#{ENV["SUNLIGHT_API"]}")
-      parsed_bills_under_query = JSON.parse(bills_under_query)
-      results = parsed_bills_under_query["results"]
-      results[0,3].each do |bill|
+    bills_under_query = RestClient.get("#{bill_url}")
 
+
+    parsed_bills_under_query = JSON.parse(bills_under_query)
+    results = parsed_bills_under_query["results"]
+   
+    #binding.pry
+    counter = 0
+   
+    results.each do |bill|
+
+      rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?&bill_id=#{bill["bill_id"]}&fields=voter_ids&apikey=#{ENV["SUNLIGHT_API"]}")
+      parsed_rounds = JSON.parse(rounds)
+      round_results = parsed_rounds["results"]
+        #binding.pry
+      if round_results[0] == nil
+        #binding.pry
+        next
+      else
         bill_instance = Bill.new(title: bill["#{
           bill["short_title"] ? "short_title" : "official_title"
           }" ] , issue: query, status: "enacted?" + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"], bill_id: bill["bill_id"], congress: bill["congress"], voted_on: "yes")
 
-        rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?&bill_id=#{bill["bill_id"]}&fields=voter_ids&apikey=#{ENV["SUNLIGHT_API"]}")
-        parsed_rounds = JSON.parse(rounds)
-        round_results = parsed_rounds["results"]
-
-        if bill_instance.save
-          self.voted_bills << bill_instance
-          
-          Pvote.last.update_attributes(issue: query, vote: round_results[0]["voter_ids"][self.bioguide_id])
-        else
-          self.voted_bills << Bill.where(bill_id: bill["bill_id"])
-          Pvote.last.update_attributes(issue: query, vote: round_results[0]["voter_ids"][self.bioguide_id])
-        end
-        bill_id_array << bill["bill_id"]
-        short_title_array << bill["short_title"]
-          
+        counter += 1
       end
-
-
-
-      # use 4 bill ids in the a new api hit 
-      bill_id_array.each_with_index do |bill_id, index|
-        rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?&bill_id=#{bill_id}&fields=voter_ids&apikey=#{ENV["SUNLIGHT_API"]}")
-        parsed_rounds = JSON.parse(rounds)
-        results = parsed_rounds["results"]
-        votes_for_bills_of_query << results[0]["voter_ids"][self.bioguide_id]
-        bills_with_votes[short_title_array[index]] = results[0]["voter_ids"][self.bioguide_id]
+        #binding.pry
+      if bill_instance.save
+        self.voted_bills << bill_instance
+        #binding.pry
+        Pvote.last.update_attributes(issue: query, vote: round_results[0]["voter_ids"][self.bioguide_id])
+      else
+        #binding.pry
+        self.voted_bills << Bill.where(bill_id: bill["bill_id"])
+        Pvote.last.update_attributes(issue: query, vote: round_results[0]["voter_ids"][self.bioguide_id])
       end
-    
-      
-      votes_for_bills_of_query
-      bills_with_votes
-
+      #binding.pry
+      break unless counter < 3
+      #binding.pry
     end
+    #binding.pry
+  end
 
 
 

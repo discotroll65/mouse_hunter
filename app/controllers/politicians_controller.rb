@@ -90,7 +90,6 @@ class PoliticiansController < ApplicationController
 			end
 			
 
-
 		end	
 			#binding.pry
 
@@ -114,7 +113,7 @@ class PoliticiansController < ApplicationController
 		@queries.each do |query|
 		  vote_hash = {}
 			@politician.pvotes.each do |politician_vote|
-			
+			  
 				if politician_vote.issue == query
 					vote_hash[politician_vote.bill.title] = politician_vote["vote"]
 				end
@@ -122,8 +121,6 @@ class PoliticiansController < ApplicationController
 		  @ideologies[query] = vote_hash
 			
 		end
-		
-
 
 		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
 		@counts = Donor.distinct.group(:industry).count
