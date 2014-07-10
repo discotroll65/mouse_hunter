@@ -11,6 +11,9 @@ class Politician < ActiveRecord::Base
   has_many :sponsored_bills, :through => :sponsorships, :source => :bill, :dependent => :destroy
   has_many :voted_bills, :through => :pvotes, :source => :bill
   validates_uniqueness_of :congress_cid
+
+# Used to store comments 
+
   
   def self.get_politicians_by_zip(zip)
     #binding.pry

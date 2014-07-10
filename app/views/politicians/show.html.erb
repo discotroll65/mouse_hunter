@@ -54,6 +54,17 @@
 </head>
 <body>
 
+<div id="fb-root"></div>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
 <div id="profile_picture_div">
 	<%= image_tag "http://theunitedstates.io/images/congress/450x550/#{@politician.bioguide_id}.jpg", id: "profile_picture" %>
 </div>
@@ -78,6 +89,8 @@
 			<li><%= image_tag "phone_icon.png", class: "social_media_icons" %></li>
 		</ul>
 	</div>
+
+	<div class="fb-like" data-href="http://localhost:3000/politicians/2/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
 
 	<div class="general_information">
 
@@ -163,6 +176,7 @@
 	</div>	
 
 
+
 <div id="committees">
 		<h1> Committees Serving on : </h1>
 		<ul>
@@ -177,6 +191,38 @@
 			<%end%>
 		</ul>
 	</div>
+
+	<!-- Comments Table -->
+
+
+<section id="content"></section>
+
+
+<section id="comments">
+	
+	<div id="respond">
+
+	  <h3>Leave a Comment</h3>
+
+	  <form action="politician_path" method="post" id="commentform">
+
+	    <label for="comment_author" class="required">Your name</label>
+	    <input type="text" name="comment_author" id="comment_author" value="" tabindex="1" required="required">
+
+	    <label for="email" class="required">Your email;</label>
+	    <input type="email" name="email" id="email" value="" tabindex="2" required="required">
+
+	    <label for="comment" class="required">Your message</label>
+	    <textarea name="comment" id="comment" rows="10" tabindex="4"  required="required"></textarea>
+
+
+	    <input type="hidden" name="comment_post_ID" value="1" id="comment_post_ID" />
+	    <input name="submit" type="submit" value="Submit comment" />
+
+	  </form>
+
+	</div>
+</section>	
 
 
 
