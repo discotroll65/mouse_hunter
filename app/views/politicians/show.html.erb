@@ -170,8 +170,7 @@
 				<% votes_hash.each_with_index do |(bill_id, vote), index| %>
 					<tr>
 						<% if index == 0 %>
-							<td rowspan=<%= votes_hash.si
-							ze %> class="issue">
+							<td rowspan=<%= votes_hash.size %> class="issue">
 								<%= issue %> 
 							</td>
 						<% end %>
