@@ -30,7 +30,7 @@ class PoliticiansController < ApplicationController
 			politicians_zip_hash.each do |politician|
 				
 				@politicians_zip << Politician.new(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"])
-			end
+				end
 
 			#checks for when the user first gets to the page
 			if politicians_zip_hash.count != 0
@@ -89,8 +89,10 @@ class PoliticiansController < ApplicationController
 			end
 			
 
+
 		end	
 			#binding.pry
+
 	end
 
 	def show
@@ -116,6 +118,7 @@ class PoliticiansController < ApplicationController
 
 
 
+
 		#get an array of the industries and what they gave
 		@counts = @politician.influences.map do |influence|
 			[influence.lobby.industry_name, influence.money_given.to_i]
@@ -132,5 +135,6 @@ class PoliticiansController < ApplicationController
 		@counts << ["Other sources", other_sources]
 		@counts = @counts.to_h
 		
+
 	end
-end
+end	

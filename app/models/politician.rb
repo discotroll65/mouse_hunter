@@ -32,9 +32,36 @@ class Politician < ActiveRecord::Base
     politicians
   end
 
+  # CHecks to see if the query input is an interger (meaning a zipcode)
+
   def self.is_i?(query)
        !!(query =~ /\A[-+]?[0-9]+\z/)
   end
+
+# This is a hash of all the demo politicians and their assigned twitter_widget_id 
+
+def self.twitter_widget_id
+    politicians = {
+      "Brad Sherman" => "486908157516476417",
+      "Barbara Boxer" => "486825057671335937", 
+      "Diane Feinstein" => "486908613877719041",
+      "Patrick Toomey" => "486909225101037568",
+      "Allyson Schwartz" => "486933279988129793",
+      "Chaka Fattah" => "486937089607348224",
+      "Robert Casey" => "486937489819435009" 
+
+    }
+
+
+end
+
+def get_twitter_id(politician_twitter_hash, politician)
+  politician_twitter_hash.each do |name, data_widget_id| 
+      name = politician.name 
+      data_widget_id
+  end   
+end 
+
 
 
   #This goes over an array returned by the method "get_politicians_by_zip", which contains hashes of politicians, and then creates active records of them using various API pulls. It also generates all the bills a politician has sponsored. A validate uniqueness in the politician and bill models make sure that duplicates don't happen. Method returns an array of Active records.
@@ -100,7 +127,7 @@ class Politician < ActiveRecord::Base
     parsed_bill_info["results"].each do |bill|
         bills_sponsored << Bill.create(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
-              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}")
+              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"])
         #add later --description: "URL for description: #{bill["urls"]["govtrack"]}"
     end
 
@@ -114,7 +141,7 @@ class Politician < ActiveRecord::Base
         parsed_bill_info_loop["results"].each do |bill|
           bills_sponsored << Bill.create(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
-              }" ] , issue: bill["committee_ids"][0], status: "enacted? " + "#{bill["history"]["enacted"]}")
+              }" ] , issue: bill["committee_ids"][0], status: "enacted? " + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"])
         end
       end
 
@@ -127,9 +154,39 @@ class Politician < ActiveRecord::Base
     #binding.pry
 
     self.sponsored_bills = bills_sponsored
-
-
   end
+
+  def get_ideology(query)
+      bill_id_array = []
+      short_title_array = []
+      votes_for_bills_of_query = []
+      bills_with_votes = {}
+      
+      # get four of the bills with the given issue/query
+
+      bills_under_query = RestClient.get("https://congress.api.sunlightfoundation.com/bills/search?query=#{query}&history.enacted=true&apikey=64177a5c45dc44eb8752332b15fb89bf")
+      parsed_bills_under_query = JSON.parse(bills_under_query)
+      results = parsed_bills_under_query["results"]
+      results[0,3].each do |bill|
+        bill_id_array << bill["bill_id"]
+        short_title_array << bill["short_title"]
+      end
+
+      # use 4 bill ids in the a new api hit 
+      bill_id_array.each_with_index do |bill_id, index|
+        rounds = RestClient.get("https://congress.api.sunlightfoundation.com/votes?&bill_id=#{bill_id}&fields=voter_ids&apikey=64177a5c45dc44eb8752332b15fb89bf")
+        parsed_rounds = JSON.parse(rounds)
+        results = parsed_rounds["results"]
+        votes_for_bills_of_query << results[0]["voter_ids"][self.bioguide_id]
+        bills_with_votes[short_title_array[index]] = results[0]["voter_ids"][self.bioguide_id]
+      end
+    
+      
+      votes_for_bills_of_query
+      bills_with_votes
+
+    end
+
 
 
 
@@ -150,7 +207,6 @@ class Politician < ActiveRecord::Base
                 	"#{self}th"
             end
         end
-
    end
 
    def symbol
@@ -185,21 +241,7 @@ class Politician < ActiveRecord::Base
 	end
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	validates_uniqueness_of :congress_cid
 
 
   def get_committee_info
@@ -235,21 +277,6 @@ class Politician < ActiveRecord::Base
   end
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-########CAMPAIGN FINANCE STARTS AT LINE 252
   def get_campaign_finance
     campaign_entered = "2012"
     #API to get summary of how much the politician raised last cycle

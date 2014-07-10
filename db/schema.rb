@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20140709113424) do
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "official_title"
+    t.string   "url"
   end
 
   create_table "committees", force: true do |t|
