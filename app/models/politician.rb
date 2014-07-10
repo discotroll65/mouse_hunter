@@ -173,7 +173,7 @@ end
       
       # get four of the bills with the given issue/query
 
-      bills_under_query = RestClient.get("https://congress.api.sunlightfoundation.com/bills/search?query=#{query}&congress=113&history.enacted=true&apikey=#{ENV["SUNLIGHT_API"]}")
+      bills_under_query = RestClient.get("https://congress.api.sunlightfoundation.com/bills?query=#{query}&congress=113&history.house_passage_result=pass&history.senate_passage_result=pass&apikey=#{ENV["SUNLIGHT_API"]}")
       parsed_bills_under_query = JSON.parse(bills_under_query)
       results = parsed_bills_under_query["results"]
       results[0,3].each do |bill|
@@ -188,6 +188,7 @@ end
 
         if bill_instance.save
           self.voted_bills << bill_instance
+          
           Pvote.last.update_attributes(issue: query, vote: round_results[0]["voter_ids"][self.bioguide_id])
         else
           self.voted_bills << Bill.where(bill_id: bill["bill_id"])
