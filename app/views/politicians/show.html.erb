@@ -22,7 +22,7 @@
 
     function drawChart() {
 
-        // Create the data table.
+      // Create the data table.
         var data = google.visualization.arrayToDataTable( [
   		  ['industry', 'companies'],
           <% @counts.each_with_index do |(industry, count), index| %>
@@ -115,4 +115,115 @@
 
 </div>
 
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
+
+
+
+<div id="committees">
+		<h1> Committees Serving on : </h1>
+		<ul>
+			<% @politician.committees.each do |committee| %>
+			
+			<%if committee.is_subcommittee == "true" %>
+				<li>
+					<h3> <%= "#{committee.name} " %> </h3> 
+				</li>
+			<%end%>
+			
+			<%end%>
+		</ul>
+	</div>
