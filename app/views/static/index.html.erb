@@ -20,7 +20,7 @@
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
 		          </button>
-		          <a class="navbar-brand" href="#">WHIT</a>
+		          <a class="navbar-brand" id="whit" href="#">WHIT</a>
 		        </div>
 		        <div class="collapse navbar-collapse">
 		          <ul class="nav navbar-nav">
@@ -32,7 +32,7 @@
 					 <li id="search_bar">	
 						<%= form_tag("/politicians", method: "get") do  %>
 						<!--<%= label_tag(:query, "Enter name:")  %> -->
-						<%= text_field_tag(:query, '',placeholder: "search here", class: "rounded_search", maxlength: 15, size: 50) %>
+						<%= text_field_tag(:query, '', placeholder: "seach by representative or zipcode to get the basic facts", class: "rounded_search", maxlength: 15, size: 50) %>
 						<!-- <%= submit_tag("Search") %> -->
 						<%  end %>
 					</li>		
@@ -55,32 +55,19 @@
 				  <!-- Wrapper for slides -->
 				 <div class="carousel-inner">
 					<div class="item active">
-						<img src="assets/washington_monu.png" alt="Los Angeles">
-							
+						<img src="assets/verge_copy.jpg" alt="Monument">
 					</div>
 					<div class="item">
-						<img src="/assets/more_dc.png" alt="New York City">
-							
+						<img src="assets/circle_copy.jpg" alt="Washington D.C.">
 					</div>
-
 					<div class="item">
-						<img src="/assets/newyork.png" alt="San Francisco">
-					</div>	
-
-					<div class="item">
-						<img src="assets/white_house.png" alt="Washington D.C.">
+						<img src="assets/more_dc.png" alt="Washington D.C.">
 					</div>
-					
 					<div class="item">
-						<img src="assets/rainy_street.png" alt="Rainy Street">
+						<img src="assets/obama_congress_copy.jpg" alt="White House">
 					</div>
-					
 					<div class="item">
-						<img src="assets/more_of_boston.png" alt="Boston">
-					</div>	
-
-					<div class="item">
-						<img src="assets/more_of_wh.png" alt="White House">
+						<img src="assets/SOTU_copy.jpg" alt="White House">
 					</div>
 				</div>	
 				  <!-- Controls -->

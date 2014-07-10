@@ -2,6 +2,7 @@
 
 
 /*navigation bar*/
+
 #static {
 
 	.item {
@@ -30,7 +31,41 @@
 		padding-top: 10px;
 	}
 }
+
+
+.navbar-inverse .navbar-brand {
+	font-size:2em;
+	position:relative;
+	left:-20px;
+
+
+}
+
+#whit {
+		color:#1B87FA;
+	}
 /*image carousel for zipcode search*/
+
+#search_bar {
+	position:relative;
+	top:300px;
+	left:170px;
+}
+
+.rounded_search {
+	border-radius:15px; 
+	-moz-border-radius:15px; 
+	-webkit-border-radius:15px; 
+	background-color:rgba(0,0,0,.8);
+	border:none;
+	height:40px;
+	color:white;
+	font-family:'Lato';
+	font-size: 1.3em;
+	font-weight:300;
+	padding:5px;
+}
+
 
 
 
