@@ -22,9 +22,9 @@
 
     function drawChart() {
 
-        // Create the data table.
+      // Create the data table.
         var data = google.visualization.arrayToDataTable( [
-  		  ['industry', 'companies'],
+  		  ['Industry', 'Money Donated'],
           <% @counts.each_with_index do |(industry, count), index| %>
         		[ '<%=industry%>', <%=count%> ]<%="," unless index == @counts.size - 1 %>
         	<% end %>
@@ -32,14 +32,14 @@
 
 	    // Set chart options
 	    var options = {
-	    	title:'donors by industry',
+	    	title: '<%="Donors from the #{@politician.influences[0].campaign_cycle} Campaign Cycle, by top 10 industries" %>' ,
 	    	titleTextStyle: {color:'black', fontName: 'Open Sans', fontSize: 14},
 	        pieHole: .4,
 	        colors: ['#FFCB9E', '#FF4A4A', '#FF6200', '#FF8833', '#FF7B0F'],
 	        fontName: "Lato",
 	        legend: {position:'none'},
 	        pieSliceTextStyle: {color:"white", fontName:"Open Sans"},
-	        pieSliceText: 'label',
+	        
 	        chartArea: {left:20}
 	    };
 
@@ -111,11 +111,14 @@
 			<th>BILL</th>
 			<th>VOTE</th>
 		</tr>
+	
 		<% @ideologies.each do |issue, votes_hash| %>
 				<% votes_hash.each_with_index do |(bill_id, vote), index| %>
 					<tr>
 						<% if index == 0 %>
+
 							<td rowspan=<%= votes_hash.size %> class="<%= cycle("odd", "even") %>">
+
 								<%= issue %> 
 							</td>
 						<% end %>
@@ -158,6 +161,23 @@
 		</a>
 		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 	</div>	
+
+
+<div id="committees">
+		<h1> Committees Serving on : </h1>
+		<ul>
+			<% @politician.committees.each do |committee| %>
+			
+			<%if committee.is_subcommittee == "true" %>
+				<li>
+					<h3> <%= "#{committee.name} " %> </h3> 
+				</li>
+			<%end%>
+			
+			<%end%>
+		</ul>
+	</div>
+
 
 
 

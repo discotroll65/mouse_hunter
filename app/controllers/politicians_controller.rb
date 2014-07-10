@@ -3,13 +3,14 @@ class PoliticiansController < ApplicationController
 	require 'googlecharts'
 
 	def index
+
+
 		if Politician.is_i?(params[:query])
 		  api_mode = "zip"
 		else
 			api_mode = "query"
 		end 
 
-		
 		
 		if api_mode == "zip"
 
@@ -87,6 +88,7 @@ class PoliticiansController < ApplicationController
 				 @politicians_query = Politician.get_all_data_for_politicians(politicians_query_hash)
 				end
 			end
+			
 
 		end	
 			#binding.pry
@@ -96,14 +98,32 @@ class PoliticiansController < ApplicationController
 	def show
 		@politician_twitter_hash = Politician.twitter_widget_id
 		@politician = Politician.find(params[:id])
+		
+
+
+
 		@queries = ["jobs", "health", "education"]
 		@ideologies = {}
-		@queries.each do |query, index|
-			# ideologies is a hash with a key that is the query and a valeu that is a hash (keys are bill ids and values are votes)
-			@ideologies[query] = @politician.get_ideology(query)
+
+		# @queries.each do |query, index|
+		# 	# ideologies is a hash with a key that is the query and a valeu that is a hash (keys are bill ids and values are votes)
+		# 	@ideologies[query] = @politician.get_ideology(query)
+			
+		# end
+		@queries.each do |query|
+		  vote_hash = {}
+			@politician.pvotes.each do |politician_vote|
+			
+				if politician_vote.issue == query
+					vote_hash[politician_vote.bill.title] = politician_vote["vote"]
+				end
+			end
+		  @ideologies[query] = vote_hash
 			
 		end
 		
+
+
 		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
 		@counts = Donor.distinct.group(:industry).count
 
@@ -112,6 +132,27 @@ class PoliticiansController < ApplicationController
 		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
 		@counts = Donor.distinct.group(:industry).count
 
+
+
+
+
+
+		#get an array of the industries and what they gave
+		@counts = @politician.influences.map do |influence|
+			[influence.lobby.industry_name, influence.money_given.to_i]
+		end
+		
+		#initialize variable that is the sum of all the money top industries donated
+		top_industry_total_given = 0
+		
+		@counts.each do |count|
+			top_industry_total_given += count[1].to_i
+		end
+
+		other_sources = @politician.money_raised - top_industry_total_given
+		@counts << ["Other sources", other_sources]
+		@counts = @counts.to_h
+		
 
 	end
 end	
