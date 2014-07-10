@@ -32,14 +32,13 @@
 
 	    // Set chart options
 	    var options = {
-	    	title: '<%="Donors from the #{@politician.influences[0].campaign_cycle} Campaign Cycle, by top 10 industries" %>' ,
+	    	// title: '<%="Donors from the #{@politician.influences[0].campaign_cycle} Campaign Cycle, by top 10 industries" %>' ,
 	    	titleTextStyle: {color:'black', fontName: 'Open Sans', fontSize: 14},
 	        pieHole: .4,
 	        colors: ['#FFCB9E', '#FF4A4A', '#FF6200', '#FF8833', '#FF7B0F'],
 	        fontName: "Lato",
 	        legend: {position:'none'},
 	        pieSliceTextStyle: {color:"white", fontName:"Open Sans"},
-	        
 	        chartArea: {left:20}
 	    };
 
@@ -54,37 +53,41 @@
 </head>
 <body>
 
-<div id="profile_picture_div">
-	<%= image_tag "http://theunitedstates.io/images/congress/450x550/#{@politician.bioguide_id}.jpg", id: "profile_picture" %>
-</div>
-<header><h1><%= "#{@politician.title}" + ". " + "#{@politician.name}" %> </h1></header>
 
-
-	<div class="quick_facts">
-		<ul>
-			<li><%= image_tag @politician.symbol, id: "party_icon" %> </li>
-			<li class="quick_stats"><%= "#{@politician.party_finder}" + " from " + "#{@politician.state}" + "#{@politician.check_if_senator}"%></li>
-			<li><%= image_tag "segmentor.png", class: "segmentor" %></li>
-			<li class="quick_stats"><%= "#{@politician.seniority} years in office" %></li>
-			<li><%= image_tag "segmentor.png", class: "segmentor" %></li>
-			<li class="quick_stats"><%= "misses #{@politician.missed_votes_pct}% of votes" %></li>
-			<li><%= image_tag "segmentor.png", class: "segmentor" %></li>
-				<!-- this url doesnt work! -->
-			<li><%= link_to image_tag "facebook_icon.png", class: "social_media_icons", url:"http://facebook.com/#{@politician.facebook_account}" %></li>
-			<li>
-				<!-- this url doesnt work! -->
-				<%= link_to image_tag "twitter_icon.png", class: "social_media_icons", url: "http://twitter.com#{@politician.twitter_id}" %>
-			</li>
-			<li><%= image_tag "phone_icon.png", class: "social_media_icons" %></li>
+	<nav>
+		<ul class="header">
+			<li id="moto">Politicians talk a good game...<br><span class="tm">WHIT</span> lets you see concrete data.<br>No opinions or promises.</li>
+			<li class="logo">WHIT</li>
 		</ul>
+	</nav>
+	<div class="sidebar">
+		<ul class="iconography">
+			<li><%= link_to image_tag "facebook_icon.png", class: "facebook_icon", url:"http://facebook.com/#{@politician.facebook_account}" %></li>
+			<li><%= link_to image_tag "twitter_icon.png", class: "twitter_icon", url: "http://twitter.com#{@politician.twitter_id}" %></li>
+			<li><%= image_tag "phone_icon.png", class: "phone_icon" %></li>
+			<li><%= image_tag @politician.symbol, id: "party_icon" %></li>
+		</ul>
+
+		<h2><%= "#{@politician.title}" + ". " + "#{@politician.name}" %></h2>
+		<h3><%="#{@politician.party_finder}" + " from " + "#{@politician.state}" + "#{@politician.check_if_senator}"%></h3>
+		<h3 id="years"><%= "#{@politician.seniority} years in office" %></h3>
+
+		<div id="twitter_integration">
+		
+		<a class="twitter-timeline" href="https://twitter.com/hashtag/#{@politician.twitter_id}" data-widget-id=<%= "#{ @politician_twitter_hash[@politician.name] }" %>  >
+			#{barbaraboxer} Tweets
+		</a>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		</div>
 	</div>
 
-	<div class="general_information">
-
-		<div class="fundraising_campaigns_icon">
+	<div class="general_info">
+		<a href="#fundraising_section">
+			<div class="fundraising_campaigns_icon">
 			<%= image_tag "fundraising_campaigns.png", id: "fundraising_campaigns_icon" %>
 			<p>FUNDRAISING</p>
-		</div>
+			</div>
+		</a>
 		<div class="ideology_icon">
 			<%= image_tag "hands.png", id: "ideology_icon" %>
 			<p>IDEOLOGY</p>
@@ -94,91 +97,35 @@
 			<p>LEGISLATION</p>
 		</div>
 
+		<%= image_tag "http://theunitedstates.io/images/congress/450x550/#{@politician.bioguide_id}.jpg", id: "profile_picture" %>
+
 	</div>
 
-<div id="fundraising">
-	<div id="donutchart" style="width: 600px; height: 300px;"></div>
-	<h4>Total money raised in the last campaign<h4>
-	<p><%=@politician.money_raised %></p>
-
-</div>
-
-
-<div id="ideology">
-	<table>
-		<tr>
-			<th>ISSUE</th>
-			<th>BILL</th>
-			<th>VOTE</th>
-		</tr>
-	
-		<% @ideologies.each do |issue, votes_hash| %>
-				<% votes_hash.each_with_index do |(bill_id, vote), index| %>
-					<tr>
-						<% if index == 0 %>
-
-							<td rowspan=<%= votes_hash.size %> class="<%= cycle("odd", "even") %>">
-
-								<%= issue %> 
-							</td>
-						<% end %>
-						<td class="<%= cycle("odd_bills", "even_bills") %>"><%= bill_id %></td>
-						<% if vote == "Yea"%>
-							<td ><%= image_tag "checkmark.jpg", id: "checkmark" %></td>
-						<% elsif vote == "Nay" %>
-							<td><%= image_tag "deny.jpg", id: "deny" %> </td>
-						<% elsif vote == "Not Voting" %>
-							<td><%= image_tag "exclamation.jpg", id: "exclamation" %> </td>
-						<% end %>
-					</tr>
-			<% end %>	
-		<% end %>	
-	</table>
-
-	<div>Votes with the party <% @politician.votes_with_party_pct %>% of the time</div>
-
-</div>
-
-<div id="legislation">
-
-	<h3>Number of Sponsored Bills</h3>
-	<%= @politician.sponsored_bills.count %>
-	<h3>Most Recent Sponsored Bills</h3>
-		<ul>
-			<% 0.upto(9) do |number| %>
-				<li><%= link_to @politician.sponsored_bills[number].title, @politician.sponsored_bills[number].url %>
+	<section id="fundraising_section">
+		<h4>Donors by industry</h4>
+		<div id="donutchart" style="width: 300px; height: 300px;"></div>
+		<div class="committees">
+			<h4> Serves on: </h4>
+			<ul class="committees_list">
+				<% @politician.committees.each do |committee| %>
+				
+					<%if committee.is_subcommittee == "true" %>
+						<li>
+							<%= "#{committee.name} " %> 
+						</li>
+					<%end%>	
+				<%end%>
+			</ul>
+		</div>
+		<p id="total_raised"><%="total raised: $#{@politician.money_raised}" %></p>
 		
-				</li>
-			<% end %>
-		</ul>
-
-</div>
-
-<div id="Twitter_intergration">
+		<div class="warning">
+			<%= image_tag "exclamation.jpg", id: "exclamation" %>
+			<p>Beware of politicians having lots of donations from an industry while serving on an affiliated commmittee</p>
+		</div>
+		<h4>Total money raised in the last campaign<h4>
 		
-		<a class="twitter-timeline" href="https://twitter.com/hashtag/#{@politician.twitter_id}" data-widget-id=<%= "#{ @politician_twitter_hash[@politician.name] }" %>  >
-			#{barbaraboxer} Tweets
-		</a>
-		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	</div>	
 
-
-<div id="committees">
-		<h1> Committees Serving on : </h1>
-		<ul>
-			<% @politician.committees.each do |committee| %>
-			
-			<%if committee.is_subcommittee == "true" %>
-				<li>
-					<h3> <%= "#{committee.name} " %> </h3> 
-				</li>
-			<%end%>
-			
-			<%end%>
-		</ul>
-	</div>
-
-
-
+	<section>
 
 </body>

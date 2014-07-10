@@ -40,7 +40,7 @@ class PoliticiansController < ApplicationController
 
 				@politicians_zip.each do |politician|
 					number_of_matches += Politician.where(:last_name => politician.last_name).count
-					#binding.pry
+					
 				end
 				puts "Number of matches = #{number_of_matches}"
 				#if politicians are not in the database, create them, get their data
@@ -80,7 +80,7 @@ class PoliticiansController < ApplicationController
 
 				@politicians_query.each do |politician|
 					number_of_matches += Politician.where(:last_name => politician.last_name).count
-					#binding.pry
+					
 				end
 				puts "Number of matches = #{number_of_matches}"
 				#if politicians are not in the database, create them, get their data
@@ -148,7 +148,7 @@ class PoliticiansController < ApplicationController
 		@counts.each do |count|
 			top_industry_total_given += count[1].to_i
 		end
-
+			
 		other_sources = @politician.money_raised - top_industry_total_given
 		@counts << ["Other sources", other_sources]
 		@counts = @counts.to_h

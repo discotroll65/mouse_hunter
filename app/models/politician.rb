@@ -83,7 +83,7 @@ end
 
         @queries.each do |query|
           # ideologies is a hash with a key that is the query and a valeu that is a hash (keys are bill ids and values are votes)
-          @ideologies[query] = Politician.last.get_ideology(query)
+          #@ideologies[query] = Politician.last.get_ideology(query)
           
         end
     end
@@ -315,6 +315,7 @@ end
     #gets the amount of money the candidate raised last election
     total_money_raised = parsed_response["response"]["summary"]["@attributes"]["total"]
     self.update_attributes(money_raised: total_money_raised)
+
 
     #API to get top industries contributing to a politician
     contributers_info = RestClient.get("http://www.opensecrets.org/api/?method=candIndustry&cid=#{self.congress_cid}&cycle=#{campaign_entered}&apikey=8bcaf847fa03a28d6b408db8a358111c&output=json")
