@@ -68,6 +68,7 @@
 		</ul>
 
 		<h2><%= "#{@politician.title}" + ". " + "#{@politician.name}" %></h2>
+		<%= image_tag "http://theunitedstates.io/images/congress/450x550/#{@politician.bioguide_id}.jpg", id: "profile_picture" %>
 		<h3><%="#{@politician.party_finder}" + " from " + "#{@politician.state}" + "#{@politician.check_if_senator}"%></h3>
 		<h3 id="years"><%= "#{@politician.seniority} years in office" %></h3>
 
@@ -152,8 +153,6 @@
 				<p>LEGISLATION</p>
 			</div>
 		</a>
-
-		<%= image_tag "http://theunitedstates.io/images/congress/450x550/#{@politician.bioguide_id}.jpg", id: "profile_picture" %>
 
 	</div>
 

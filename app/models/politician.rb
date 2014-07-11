@@ -217,7 +217,7 @@ end
         self.voted_bills << Bill.where(bill_id: bill["bill_id"])
         Pvote.last.update_attributes(issue: query, vote: round_results[0]["voter_ids"][self.bioguide_id])
       end
-      #binding.pry
+      
       break unless counter < 3
       #binding.pry
     end

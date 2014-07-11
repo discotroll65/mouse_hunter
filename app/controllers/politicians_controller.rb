@@ -106,7 +106,7 @@ class PoliticiansController < ApplicationController
 		end
 		
 
-		@queries = ["jobs", "health", "education", "security", "veterans", "women"]
+		@queries = ["jobs", "health", "education", "security", "veterans", "immigration", "military", "unions", "taxes", "agriculture"]
 		@ideologies = {}
 
 		# @queries.each do |query, index|
