@@ -51,7 +51,8 @@ def self.twitter_widget_id
       "Patrick Toomey" => "486909225101037568",
       "Allyson Schwartz" => "486933279988129793",
       "Chaka Fattah" => "486937089607348224",
-      "Robert Casey" => "486937489819435009" 
+      "Robert Casey" => "486937489819435009",
+      "Patrick Meehan" => "487532918676279297"
 
     }
 
@@ -326,7 +327,7 @@ end
   def get_campaign_finance
     campaign_entered = "2012"
     #API to get summary of how much the politician raised last cycle
-   
+  
     response = RestClient.get("http://www.opensecrets.org/api/?method=candSummary&cid=#{self.congress_cid}&cycle=2012&apikey=#{ENV["OPENSECRETS_API"]}&output=json")
 
     parsed_response = JSON.parse(response)

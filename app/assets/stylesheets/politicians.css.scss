@@ -96,7 +96,7 @@ nav {
 
 .sidebar {
 	background-color:#d8d6d6;
-	height: 500vh;
+	height: 732vh;
 	width:30vw;
 	float:right;
 	position:relative;
@@ -151,6 +151,76 @@ nav {
 		top:-15px;
 	}
 
+	#comments {
+		position:relative;
+		top:200px;
+		width: 20vw;
+		left:60px;
+
+		h4 {
+			font-size:1.5em;
+			font-family: 'Lato';
+			font-weight:300;
+		}
+
+		#message {
+			height:200px;
+			margin-top: 20px;
+		}
+
+		#submit_message {
+			border-radius:20px;
+			background-color:white;
+			font-family: 'Lato';
+			font-weight:300;
+			border:none;
+			margin-top:10px;
+		}
+
+		.list_of_comments {
+			list-style-type: none;
+			position:relative;
+			left: -30px;
+			top:30px;
+
+			li.comment {
+				margin-bottom: 30px;
+				h5 {
+					font-family:'Helvetica Neue';
+					font-size:17px;
+					font-weight:400;
+				}
+
+				p {
+					font-family:'Helvetica Neue';
+					font-size:12px;
+					font-weight:200;
+
+					#timer {
+						font-size: 10px;
+					}
+				}
+			}
+		}
+
+		.posts {
+			h4 {
+				margin-top:60px;
+				border: 5px solid white;
+				padding: 10px;
+			}
+		}
+
+	}
+
+	#very_specific_id {
+			position:relative;
+			top:250px;
+			width:25vw;
+			left:20px;
+	}
+
+
 
 }
 
@@ -166,6 +236,8 @@ nav {
 		font-family: 'Helvetica Neue';
 		font-weight:200;
 		text-align: center;
+		color:black;
+		padding-top:10px;
 	}
 
 	div {
@@ -206,7 +278,7 @@ nav {
 	height:53px;
 	position:relative;
 	top:-137px;
-	left:160px;
+	left:110px;
 
 	}
 }
@@ -235,10 +307,9 @@ nav {
 			width:70vw;
 			font-weight: 300;
 			position: relative;
-			top: -270px;
+			top: -440px;
 			padding-left:40px;
 			padding-bottom:28vh;
-			border-bottom: 5px solid #44a5e1; 
 			display:inline-block;
 
 			p {
@@ -258,10 +329,11 @@ nav {
 		font-weight:300;
 		font-size:3em;
 		position:relative;
-		top:-150px;
-		left:-17vh;
-		margin: 5px 25vw;
+		top:-300px;
+		padding: 20px 35px;
+		padding-left:15vw;
 		width:70vw;
+		border-bottom: 5px solid #44a5e1; 
 	
 	}
 
@@ -296,12 +368,15 @@ nav {
 	width:70vw;
 	height:100vh;
 	position:relative;
-	top:-200px;
-	border-bottom: 5px solid #44a5e1; 
+	top:200px;
+	// border-bottom: 5px solid #44a5e1; 
 
 	h4 {
 		position:relative;
 		left:20px;
+		font-size:1.5em;
+		font-family: 'Lato';
+		font-weight:300;
 	}
 
 	table {
@@ -338,7 +413,7 @@ nav {
 	}
 
 	.odd {
-		background-color:#FF8C45;
+		background-color:#FF9257;
 		font-weight:300;
 		font-size:1.2em;
 
@@ -377,9 +452,35 @@ nav {
 #legislation_section {
 	background-color:lightblue;
 	position: relative;
-	top: -220px;
-	height:100vh;
+	top: 700px;
+	height:300vh;
 	width:70vw;
+
+	h4 {
+		position:relative;
+		left:20px;
+		font-size:1.5em;
+		font-family: 'Lato';
+		font-weight:300;
+	}
+
+	p {
+			background-color:white;
+			width:170px;
+			height:150px;
+			text-align:center;
+			font-family: 'Lato';
+			font-weight:300;
+			font-size:1.2em;
+			padding-top:25px;
+
+			#number_bills_sponsored {
+				font-size: 5em;
+				color:#FF9257;
+				position:relative;
+				top:-15px;
+			}
+	}
 
 	.sponsored_bills_list {
 		list-style-type: none;
@@ -394,18 +495,19 @@ nav {
 				font-decoration:none;
 			}
 		}
+
 	}
 }
 
 
 
-#respond {
+.respond {
   margin-top: 40px;
 }
 
-#respond input[type='text'],
-#respond input[type='email'], 
-#respond textarea {
+.respond input[type='text'],
+.respond input[type='email'], 
+.respond textarea {
   margin-bottom: 10px;
   display: block;
   width: 100%;
