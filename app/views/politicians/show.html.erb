@@ -178,7 +178,13 @@
 			<%= image_tag "exclamation.jpg", id:"beware"%>
 			<p>Beware of politicians having lots of donations from an industry while serving on an affiliated commmittee</p>
 		</div>
-
+		<h4 id="supporters"><%= "Interest groups that support #{@politician.name}"%></h4>
+		<div class="approval">
+			<div id="greenpeace"></div>
+			<div id="parenthood"></div>
+			<div id="peta"></div>
+			<div id="nea"></div>
+		</div>
 	</section>
 
 	<section id="ideology_section">
@@ -229,7 +235,7 @@
 
 				passed_bills_array.each do |bill|
 				%>
-				<li class="sponsored_bills"><%= link_to bill.title, bill.url %>
+				<li class="sponsored_bills"><%= link_to bill.title, bill.url, id: "billz"%>
 		
 				</li>
 			<% end %>

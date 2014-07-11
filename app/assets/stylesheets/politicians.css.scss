@@ -107,6 +107,7 @@ nav {
 		position:relative;
 		top:10px;
 		left:25px;
+		width:350px;
 
 		li {
 			list-style-type: none;
@@ -220,6 +221,7 @@ nav {
 			top:300px;
 			width:25vw;
 			left:40px;
+			overflow: hidden;
 	}
 
 	#profile_picture {
@@ -260,16 +262,16 @@ nav {
 		margin-left: 75px;
 
 		#fundraising_campaigns_icon {
-			height:115px;
-			width:140px;
+			height:135px;
+			width:160px;
 		}
 	}
 
 	div.ideology_icon {
 		
 		#ideology_icon {
-			height:120px;
-			width:120px;
+			height:140px;
+			width:140px;
 		}
 	}
 
@@ -277,8 +279,8 @@ nav {
 		padding-right:0;
 
 		#legislation_icon {
-			height:110px;
-			width:130px;
+			height:130px;
+			width:150px;
 		}
 	}
 
@@ -357,6 +359,70 @@ nav {
 				font-size:16px;
 			}
 		}
+	}
+
+	#supporters {
+		position:relative;
+		top:-390px;
+		width:70vw;
+		left:20px;
+	}
+
+	.approval {
+		position:relative;
+		top:-305px;
+		margin-left:40px;
+
+
+		#greenpeace {
+			background-image: url("greenpeace.jpeg");
+			background-repeat:no-repeat;
+			width:100px;
+			height:100px;
+			border-radius:100px;
+			background-size:contain;
+			background-position:center;
+			display:inline-block;
+			margin-right:10vw;
+		}
+
+		#parenthood {
+			background-image: url("plannedparenthood.jpg");
+			width:100px;
+			height:100px;
+			border-radius:100px;
+			background-repeat:no-repeat;
+			background-size:contain;
+			background-position:center;
+			display:inline-block;
+			margin-right:10vw;
+			background-color:black;
+		}
+
+		#peta {
+			background-image: url("peta.png");
+			width:100px;
+			height:100px;
+			border-radius:100px;
+			background-repeat:no-repeat;
+			background-size:contain;
+			background-position:center;
+			display:inline-block;
+			margin-right:10vw;
+		}
+
+		#nea {
+			background-image: url("nea.jpg");
+			width:100px;
+			height:100px;
+			border-radius:100px;
+			background-repeat:no-repeat;
+			background-size:65px 55px;
+			background-position:center;
+			display:inline-block;
+			margin-right:0vw;
+		}
+
 	}
 }
 
@@ -481,7 +547,7 @@ nav {
 			margin-bottom:40px;
 
 			#number_bills_sponsored {
-				font-size: 4em;
+				font-size: 3em;
 				color:#FF9257;
 				position:relative;
 				top:-15px;
@@ -505,7 +571,9 @@ nav {
 	}
 }
 
-
+#billz:hover {
+	text-decoration: none;
+}
 
 .respond {
   margin-top: 40px;
