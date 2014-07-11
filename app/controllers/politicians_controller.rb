@@ -99,7 +99,7 @@ class PoliticiansController < ApplicationController
 	def show
 		@politician_twitter_hash = Politician.twitter_widget_id
 		@politician = Politician.find(params[:id])
-		
+		post = Post.new(:body => params[:comment])
 		
 		if params[:comment] != nil
 			@politician.posts << Post.new(:body => params[:comment])
