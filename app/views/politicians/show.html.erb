@@ -236,7 +236,7 @@
 		</ul>
 		<p>Total bills sponsored:<br><span id="number_bills_sponsored"><%= @politician.sponsored_bills.count %></span></p>
 
-		<p>% of Sponsored Bills passed:<br><span id="number_bills_sponsored"><%= "%#{((@efficiency[:bills_passed] / @efficiency[:bills_sponsored])*100).round(2).to_s}" %></span></p>
+		<p>% of Sponsored Bills passed:<br><span id="number_bills_sponsored"><%= "#{((@efficiency[:bills_passed] / @efficiency[:bills_sponsored])*100).round(2).to_s}"% %></span></p>
 
 	</section>
 		

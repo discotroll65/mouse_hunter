@@ -126,6 +126,7 @@ class PoliticiansController < ApplicationController
 
 		end
 	
+	
 		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
 		@counts = Donor.distinct.group(:industry).count
 

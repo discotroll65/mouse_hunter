@@ -82,7 +82,7 @@ end
       Politician.last.get_info_from_NYT
       Politician.last.get_campaign_finance
       Politician.last.get_committee_info
-        @queries = ["jobs", "health", "education"]
+         @queries = ["jobs", "health", "education", "security", "veterans", "immigration", "military", "unions", "taxes", "agriculture"]
         @ideologies = {}
 
         @queries.each do |query|
