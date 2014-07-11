@@ -80,6 +80,56 @@
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 			</script>
 		</div>
+
+		<section id="comments">
+	
+			<div class="respond">
+
+			   <h4><%= "Leave a comment about #{@politician.name}" %>
+			   </h4>
+
+				<%= form_tag(politician_path(@politician.id), method: "get") do  %>
+
+				<!-- 	<label for="comment" class="required">Your message</label> -->
+
+				    <%= text_area_tag(:comment, '', placeholder: "Type your comment here", class: "rounded_search", id: "message", rows: 15, cols: 25) %>
+					<%= submit_tag("Comment", id: "submit_message") %>
+
+				<% end %>
+
+			</div>
+
+			<div class="posts">
+				<h4><%= "What users are saying about #{@politician.name}"%></h4>
+				<ul class="list_of_comments">
+					
+				<% @politician.posts.each do |post| %>
+					<li class="comment">
+						<h5> anonymous wrote:</h2>
+						<p> <%= post.body %> <br>
+							<span id="timer"> on <%= post.created_at.strftime("%m/%d/%Y at %I:%M %p") %><span> </p>
+						<!-- .strftime(" %m %d %Y at %I:%M%p") -->
+					</li>
+
+				<% end %>
+				</ul>
+			</div>
+		</section>
+
+		<section id="very_specific_id">
+			<div id="fb-root"></div>
+			<div id="fb-root"></div>
+			<script>(function(d, s, id) {
+			  var js, fjs = d.getElementsByTagName(s)[0];
+			  if (d.getElementById(id)) return;
+			  js = d.createElement(s); js.id = id;
+			  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+			  fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+			</script>
+			<div class="fb-like" data-href="http://localhost:3000/politicians/2/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true">
+			</div>
+		<section>
 	</div>
 
 
@@ -179,56 +229,6 @@
 			<p><%= @politician.sponsored_bills.count %></p>
 	</section>
 		
-
-
-	<!-- Comments Table -->
-
-	<section id="comments">
-	
-		<div id="respond">
-
-		   <h3>Leave a Comment</h3>
-
-		  <h4>Anonymous</h4>
-
-			<%= form_tag(politician_path(@politician.id), method: "get") do  %>
-
-				<label for="comment" class="required">Your message</label>
-
-			    <%= text_area_tag(:comment, '', placeholder: "Type your comment here", class: "rounded_search", rows: 15, cols: 25) %>
-				<%= submit_tag("Comment") %>
-
-			<% end %>
-
-		</div>
-
-		<div id="posts">
-			<ul>
-				
-			<% @politician.posts.each do |post| %>
-				<li>
-					<h2> @<%= post.created_at %> Anonymous wrote:</h2>
-					<h3> <%= post.body %>  </h3>
-				</li>
-
-			<% end %>
-			</ul>
-		</div>
-	</section>
-
-	<div id="fb-root"></div>
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
-	</script>
-
-	<div class="fb-like" data-href="http://localhost:3000/politicians/2/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true">
-	</div>
 
 
 </body>

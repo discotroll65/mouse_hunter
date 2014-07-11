@@ -151,6 +151,76 @@ nav {
 		top:-15px;
 	}
 
+	#comments {
+		position:relative;
+		top:200px;
+		width: 20vw;
+		left:60px;
+
+		h4 {
+			font-size:1.5em;
+			font-family: 'Lato';
+			font-weight:300;
+		}
+
+		#message {
+			height:200px;
+			margin-top: 20px;
+		}
+
+		#submit_message {
+			border-radius:20px;
+			background-color:white;
+			font-family: 'Lato';
+			font-weight:300;
+			border:none;
+			margin-top:10px;
+		}
+
+		.list_of_comments {
+			list-style-type: none;
+			position:relative;
+			left: -30px;
+			top:30px;
+
+			li.comment {
+				margin-bottom: 30px;
+				h5 {
+					font-family:'Helvetica Neue';
+					font-size:17px;
+					font-weight:400;
+				}
+
+				p {
+					font-family:'Helvetica Neue';
+					font-size:12px;
+					font-weight:200;
+
+					#timer {
+						font-size: 10px;
+					}
+				}
+			}
+		}
+
+		.posts {
+			h4 {
+				margin-top:60px;
+				border: 5px solid white;
+				padding: 10px;
+			}
+		}
+
+	}
+
+	#very_specific_id {
+			position:relative;
+			top:250px;
+			width:25vw;
+			left:20px;
+	}
+
+
 
 }
 
@@ -399,13 +469,13 @@ nav {
 
 
 
-#respond {
+.respond {
   margin-top: 40px;
 }
 
-#respond input[type='text'],
-#respond input[type='email'], 
-#respond textarea {
+.respond input[type='text'],
+.respond input[type='email'], 
+.respond textarea {
   margin-bottom: 10px;
   display: block;
   width: 100%;
