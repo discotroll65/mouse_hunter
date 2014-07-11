@@ -90,14 +90,18 @@
 			<p>FUNDRAISING</p>
 			</div>
 		</a>
-		<div class="ideology_icon">
-			<%= image_tag "hands.png", id: "ideology_icon" %>
-			<p>IDEOLOGY</p>
-		</div>
-		<div class="legislation_icon">
-			<%= image_tag "legislation.png", id: "legislation_icon" %>
-			<p>LEGISLATION</p>
-		</div>
+		<a href="#ideology_section">
+			<div class="ideology_icon">
+				<%= image_tag "hands.png", id: "ideology_icon" %>
+				<p>IDEOLOGY</p>
+			</div>
+		</a>
+		<a href="#legislation_section">
+			<div class="legislation_icon">
+				<%= image_tag "legislation.png", id: "legislation_icon" %>
+				<p>LEGISLATION</p>
+			</div>
+		</a>
 
 		<%= image_tag "http://theunitedstates.io/images/congress/450x550/#{@politician.bioguide_id}.jpg", id: "profile_picture" %>
 
@@ -122,9 +126,58 @@
 		<p id="total_raised"><%="total raised: $#{@politician.money_raised}" %></p>
 		
 		<div class="warning">
-			<%= image_tag "exclamation.jpg", id: "exclamation" %>
+			<%= image_tag "exclamation.jpg", id:"beware"%>
 			<p>Beware of politicians having lots of donations from an industry while serving on an affiliated commmittee</p>
 		</div>
+
+	<section id="ideology_section">
+		<h4>Recent votes by category</h4>
+		<table>
+			<tr>
+				<th>ISSUE</th>
+				<th>BILL</th>
+				<th>VOTE</th>
+			</tr>
+		
+			<% @ideologies.each do |issue, votes_hash| %>
+					<% votes_hash.each_with_index do |(bill_id, vote), index| %>
+						<tr>
+							<% if index == 0 %>
+
+								<td rowspan=<%= votes_hash.size %> class="<%=cycle("odd", "even")%>">
+									<%= issue %> 
+								</td>
+							<% end %>
+							<td><%= bill_id %></td>
+							<% if vote == "Yea"%>
+								<td ><%= image_tag "checkmark.jpg", id: "checkmark" %></td>
+							<% elsif vote == "Nay" %>
+								<td><%= image_tag "deny.jpg", id: "deny" %> </td>
+							<% elsif vote == "Not Voting" %>
+								<td><%= image_tag "exclamation.jpg", id: "exclamation" %> </td>
+							<% end %>
+						</tr>
+				<% end %>	
+			<% end %>	
+		</table>
+		<div  class="circle">
+			<p>Votes with the party <% @politician.votes_with_party_pct %>% of the time</p>
+		</div>
+
+	</section>
+
+	<section id="legislation_section">
+		<h4>Most Recent Sponsored Bills</h4>
+		<ul class="sponsored_bills_list">
+			<% 0.upto(9) do |number| %>
+				<li class="sponsored_bills"><%= link_to @politician.sponsored_bills[number].title, @politician.sponsored_bills[number].url %>
+		
+				</li>
+			<% end %>
+		</ul>
+		<h4>Number of Sponsored Bills</h4>
+			<p><%= @politician.sponsored_bills.count %></p>
+	</section>
 		
 
 
