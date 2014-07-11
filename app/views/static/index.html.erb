@@ -31,9 +31,9 @@
 		        
 					 <li id="search_bar">	
 						<%= form_tag("/politicians", method: "get") do  %>
-						<!--<%= label_tag(:query, "Enter name:")  %> -->
+						
 						<%= text_field_tag(:query, '', placeholder: "seach by representative or zipcode to get the basic facts", class: "rounded_search", maxlength: 15, size: 50) %>
-						<!-- <%= submit_tag("Search") %> -->
+						
 						<%  end %>
 					</li>		
 		          </ul>

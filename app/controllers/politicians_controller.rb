@@ -12,6 +12,7 @@ class PoliticiansController < ApplicationController
 		end 
 
 		
+
 		if api_mode == "zip"
 
 	  		#Data in the Politician table is currently populated/saved by running 'rake db:seed' in the terminal, which does an API call that hardwires in the reps from zipcode 12009##	
@@ -99,8 +100,11 @@ class PoliticiansController < ApplicationController
 		@politician_twitter_hash = Politician.twitter_widget_id
 		@politician = Politician.find(params[:id])
 		
-
-
+		
+		if params[:comment] != nil
+			@politician.posts << Post.new(:body => params[:comment])
+		end
+		
 
 		@queries = ["jobs", "health", "education"]
 		@ideologies = {}
@@ -150,7 +154,12 @@ class PoliticiansController < ApplicationController
 		other_sources = @politician.money_raised - top_industry_total_given
 		@counts << ["Other sources", other_sources]
 		@counts = @counts.to_h
-		
-
 	end
+
+
+	private
+	 def task_params
+      params.require(:post).permit(:comment)
+     end
+
 end	

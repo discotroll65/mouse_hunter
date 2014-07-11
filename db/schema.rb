@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140710025159) do
+ActiveRecord::Schema.define(version: 20140710234339) do
 
   create_table "assignments", force: true do |t|
     t.integer  "politician_id"
@@ -92,6 +92,13 @@ ActiveRecord::Schema.define(version: 20140710025159) do
     t.string   "votes_with_party_pct"
     t.string   "facebook_account"
     t.string   "bioguide_id"
+  end
+
+  create_table "posts", force: true do |t|
+    t.text     "body"
+    t.integer  "politician_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "pvotes", force: true do |t|

@@ -1,6 +1,6 @@
-
-
 class Politician < ActiveRecord::Base
+  has_many :posts
+
   has_many :sponsorships
   has_many :pvotes
   has_many :influences
