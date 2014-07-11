@@ -217,7 +217,7 @@
 	</section>
 
 	<section id="legislation_section">
-		<h4><%="Bills Sponsored by #{@politician.name} that have become law." %> </h4>
+		<h4><%="Bills Sponsored by #{@politician.name} that have become law" %> </h4>
 		<ul class="sponsored_bills_list">
 			<%  passed_bills_hash = @efficiency.except(:bills_passed, :bills_sponsored, :years_in_congress)
 
@@ -236,9 +236,9 @@
 		</ul>
 		<p>Total bills sponsored:<br><span id="number_bills_sponsored"><%= @politician.sponsored_bills.count %></span></p>
 
-		<p>% of Sponsored Bills passed:<br><span id="number_bills_sponsored"><%= "#{((@efficiency[:bills_passed] / @efficiency[:bills_sponsored])*100).round(2).to_s}%" %></span></p>
+		<p>Sponsored bills that actually passed:<br><span id="number_bills_sponsored"><%= "#{((@efficiency[:bills_passed] / @efficiency[:bills_sponsored])*100).round(2).to_s}%" %></span></p>
 
-		<p>Years has been in Congress:<br><span id="number_bills_sponsored"><%= "#{@politician.seniority}" %></span></p>
+		<p>Years in Congress:<br><span id="number_bills_sponsored"><%= "#{@politician.seniority}" %></span></p>
 
 	</section>
 		

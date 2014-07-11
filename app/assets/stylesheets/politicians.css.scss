@@ -96,7 +96,7 @@ nav {
 
 .sidebar {
 	background-color:#d8d6d6;
-	height: 732vh;
+	height: 932vh;
 	width:30vw;
 	float:right;
 	position:relative;
@@ -146,16 +146,16 @@ nav {
 	}
 
 	#twitter_integration {
-		width: 20vw;
+		width: 22vw;
 		height: 70vh;
 		position:relative;
 		left:60px;
-		top:15px;
+		top:5px;
 	}
 
 	#comments {
 		position:relative;
-		top:200px;
+		top:230px;
 		width: 20vw;
 		left:60px;
 
@@ -217,7 +217,7 @@ nav {
 
 	#very_specific_id {
 			position:relative;
-			top:250px;
+			top:300px;
 			width:25vw;
 			left:40px;
 	}
@@ -253,7 +253,7 @@ nav {
 	div {
 		display:inline-block;
 		padding-right:15%;
-		margin-top:60px;
+		margin-top:100px;
 	}
 
 	div.fundraising_campaigns_icon {
@@ -462,6 +462,7 @@ nav {
 		font-size:1.5em;
 		font-family: 'Lato';
 		font-weight:300;
+		padding-top:40px;
 	}
 
 	p {
@@ -474,12 +475,13 @@ nav {
 			font-size:1.2em;
 			padding-top:25px;
 			position:relative;
-			top:-150px;
-			float:right;
+			top:40px;
+			left:50vw;
 			margin-right:40px;
+			margin-bottom:40px;
 
 			#number_bills_sponsored {
-				font-size: 5em;
+				font-size: 4em;
 				color:#FF9257;
 				position:relative;
 				top:-15px;
