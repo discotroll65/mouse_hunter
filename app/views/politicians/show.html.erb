@@ -180,6 +180,8 @@
 			<p>Beware of politicians having lots of donations from an industry while serving on an affiliated commmittee</p>
 		</div>
 
+	</section>
+
 	<section id="ideology_section">
 		<h4>Recent votes by category</h4>
 		<table>
@@ -203,7 +205,7 @@
 								<td ><%= image_tag "checkmark.jpg", id: "checkmark" %></td>
 							<% elsif vote == "Nay" %>
 								<td><%= image_tag "deny.jpg", id: "deny" %> </td>
-							<% elsif vote == "Not Voting" %>
+							<% else vote == "Not Voting" %>
 								<td><%= image_tag "exclamation.jpg", id: "exclamation" %> </td>
 							<% end %>
 						</tr>
@@ -213,7 +215,6 @@
 		<div  class="circle">
 			<p>Votes with the party <%= @politician.votes_with_party_pct %>% of the time</p>
 		</div>
-
 	</section>
 
 	<section id="legislation_section">
@@ -225,8 +226,7 @@
 				</li>
 			<% end %>
 		</ul>
-		<h4>Number of Sponsored Bills</h4>
-			<p><%= @politician.sponsored_bills.count %></p>
+		<p>Total bills sponsored:<br><span id="number_bills_sponsored"><%= @politician.sponsored_bills.count %></span></p>
 	</section>
 		
 
