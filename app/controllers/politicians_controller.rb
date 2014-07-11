@@ -102,7 +102,7 @@ class PoliticiansController < ApplicationController
 
 
 
-		@queries = ["jobs", "health", "education"]
+		@queries = ["jobs", "health", "education", "security", "veterans", "women"]
 		@ideologies = {}
 
 		# @queries.each do |query, index|
@@ -119,9 +119,9 @@ class PoliticiansController < ApplicationController
 				end
 			end
 		  @ideologies[query] = vote_hash
-			
-		end
 
+		end
+	
 		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
 		@counts = Donor.distinct.group(:industry).count
 

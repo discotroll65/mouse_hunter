@@ -206,7 +206,7 @@ nav {
 	height:53px;
 	position:relative;
 	top:-137px;
-	left:115px;
+	left:160px;
 
 	}
 }
@@ -235,7 +235,7 @@ nav {
 			width:70vw;
 			font-weight: 300;
 			position: relative;
-			top: -330px;
+			top: -270px;
 			padding-left:40px;
 			padding-bottom:28vh;
 			border-bottom: 5px solid #44a5e1; 
@@ -249,12 +249,16 @@ nav {
 			}
 	}
 
+	#beware {
+		width:30px;
+	}
+
 	#total_raised {
 		font-family:'Lato';
 		font-weight:300;
 		font-size:3em;
 		position:relative;
-		top:-180px;
+		top:-150px;
 		left:-17vh;
 		margin: 5px 25vw;
 		width:70vw;
@@ -288,49 +292,112 @@ nav {
 
 /* IDEOLOGY */
 
+#ideology_section {
+	width:70vw;
+	height:100vh;
+	position:relative;
+	top:-200px;
+	border-bottom: 5px solid #44a5e1; 
 
-table {
-	font-family:'Open Sans';
-	font-weight:200;
+	h4 {
+		position:relative;
+		left:20px;
+	}
+
+	table {
+		font-family:'Helvetica Neue';
+		font-weight:200;
+		margin-left: 100px;
+		margin-top: 20px;
+
+	}
 
 	th {
 		font-family:'Lato';
-		font-weight:400;
-		font-size:1.2em;
+		font-weight:300;
+		font-size:14px;
 		margin-right: 40px;
 		margin-left: 40px;
 		padding-left:10px;
 		padding-right: 10px;
-		padding-bottom: 15px;
+		padding-bottom: 5px;
 
 	}
 
 	td {
-		margin-right: 40px;
 		margin-left: 40px;
 		padding-left:10px;
-		padding-right: 10px;
+		padding-right: 100px;
 		padding-bottom: 15px;
+	}
+
+	#checkmark, #deny, #exclamation {
+	width:20px;
+	height:20px;
+
+	}
+
+	.odd {
+		background-color:#FF8C45;
+		font-weight:300;
+		font-size:1.2em;
+
+	}
+
+	.even {
+		font-weight:300;
+		font-size:1.3em;
+	}
+
+	.circle {
+		width:140px;
+		height:140px;
+		border-radius:100px;
+		background-color:#7CD2FC;
+		// margin-top: 20px;
+		// margin-left:20px;
+		float:right;
+		margin-right: 20px;
+
+		p {
+			font-family:'Lato';
+			font-weight:300;
+			text-align:center;
+			font-size:14px;
+			width: 120px;
+			position:relative;
+			top:50px;
+			left:10px;
+		}
 	}
 
 }
 
-#checkmark, #deny, #exclamation {
-	width:20px;
-	height:20px;
+
+#legislation_section {
+	background-color:lightblue;
+	position: relative;
+	top: -220px;
+	height:100vh;
+	width:70vw;
+
+	.sponsored_bills_list {
+		list-style-type: none;
+		
+		li.sponsored_bills {
+			color:rgb(0,0,0);
+			font-family:'Helvetica Neue';
+			font-weight:200;
+			font-size: 16px;
+			
+			&:hover {
+				font-decoration:none;
+			}
+		}
+	}
 }
 
-.odd {
-	background-color:#FF8C45;
-	font-weight:300;
-	font-size:1.3em;
 
-}
-
-.even {
-	font-weight:300;
-	font-size:1.3em;
-}
 
 #respond {
   margin-top: 40px;
@@ -353,6 +420,7 @@ table {
 
   line-height: 1.4em;
 }
+
 
 
 
