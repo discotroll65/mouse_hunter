@@ -136,10 +136,18 @@ end
      
     #go through all the pages of the bills the politician has sponsored
     parsed_bill_info["results"].each do |bill|
-        bills_sponsored << Bill.create(title: bill["#{
+        
+        bill_instance = Bill.new(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
-              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"])
-        #add later --description: "URL for description: #{bill["urls"]["govtrack"]}"
+              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"], bill_id: bill["bill_id"], congress: bill["congress"])
+        if bill_instance.save
+          bills_sponsored << bill_instance
+          
+        else
+          #binding.pry
+          bills_sponsored << Bill.where(bill_id: bill["bill_id"])
+        
+        end        
     end
 
 
@@ -150,19 +158,21 @@ end
 
         parsed_bill_info_loop = JSON.parse(bill_info_loop)
         parsed_bill_info_loop["results"].each do |bill|
-          bills_sponsored << Bill.create(title: bill["#{
+          bill_instance = Bill.new(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
-              }" ] , issue: bill["committee_ids"][0], status: "enacted? " + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"])
+              }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"], bill_id: bill["bill_id"], congress: bill["congress"])
+          if bill_instance.save
+            bills_sponsored << bill_instance
+            
+          else
+            #binding.pry
+            bills_sponsored << Bill.where(bill_id: bill["bill_id"])
+          
+          end
         end
       end
 
     end
-
-    ######      @counts = Donor.distinct.group(:industry).count
-
-    ######      Bill.new(title: bill["#{bill["short_title"] ? "short_title" : "official_title"}" ] , issue: bill["committee_ids"][0], status: "enacted? " + "#{bill["history"]["enacted"]}")
-
-    #binding.pry
 
     self.sponsored_bills = bills_sponsored
   end
