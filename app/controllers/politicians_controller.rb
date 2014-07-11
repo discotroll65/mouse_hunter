@@ -156,6 +156,16 @@ class PoliticiansController < ApplicationController
 		
 
 		@counts = @counts.to_h
+
+
+		@efficiency = {:bills_passed => 0, :bills_sponsored => @politician.sponsored_bills.count, :years_in_congress => @politician.seniority}
+
+		@politician.sponsored_bills.each do |bill|
+		   if (bill.status.match /true/)  
+		     @efficiency[:bills_passed] += 1.0    
+		     @efficiency["bill_id#{@efficiency[:bills_passed]}".to_sym] = bill.id
+		   end  
+		end 
 	end
 
 

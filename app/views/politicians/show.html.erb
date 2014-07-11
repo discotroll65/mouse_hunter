@@ -217,15 +217,27 @@
 	</section>
 
 	<section id="legislation_section">
-		<h4>Most Recent Sponsored Bills</h4>
+		<h4><%="Bills Sponsored by #{@politician.name} that have become law." %> </h4>
 		<ul class="sponsored_bills_list">
-			<% 0.upto(9) do |number| %>
-				<li class="sponsored_bills"><%= link_to @politician.sponsored_bills[number].title, @politician.sponsored_bills[number].url %>
+			<%  passed_bills_hash = @efficiency.except(:bills_passed, :bills_sponsored, :years_in_congress)
+
+				passed_bills_array = []
+
+				passed_bills_hash.each do |bill_key, identifier|
+					passed_bills_array << @politician.sponsored_bills.find(identifier)
+				end
+
+				passed_bills_array.each do |bill|
+				%>
+				<li class="sponsored_bills"><%= link_to bill.title, bill.url %>
 		
 				</li>
 			<% end %>
 		</ul>
 		<p>Total bills sponsored:<br><span id="number_bills_sponsored"><%= @politician.sponsored_bills.count %></span></p>
+
+		<p>% of Sponsored Bills passed:<br><span id="number_bills_sponsored"><%= "%#{((@efficiency[:bills_passed] / @efficiency[:bills_sponsored])*100).round(2).to_s}" %></span></p>
+
 	</section>
 		
 
