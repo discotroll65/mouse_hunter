@@ -150,9 +150,11 @@ class PoliticiansController < ApplicationController
 		@counts.each do |count|
 			top_industry_total_given += count[1].to_i
 		end
-			
-		other_sources = @politician.money_raised - top_industry_total_given
-		@counts << ["Other sources", other_sources]
+	
+		# other_sources = @politician.money_raised - top_industry_total_given
+		# @counts << ["Other sources", other_sources]
+		
+
 		@counts = @counts.to_h
 	end
 
