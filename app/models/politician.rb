@@ -141,6 +141,7 @@ end
         bill_instance = Bill.new(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
               }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"], bill_id: bill["bill_id"], congress: bill["congress"])
+
         if bill_instance.save
           bills_sponsored << bill_instance
           
@@ -162,6 +163,7 @@ end
           bill_instance = Bill.new(title: bill["#{
               bill["short_title"] ? "short_title" : "official_title"
               }" ] , issue: bill["committee_ids"][0], status: "enacted?" + "#{bill["history"]["enacted"]}", official_title: bill["official_title"], url: bill["urls"]["govtrack"], bill_id: bill["bill_id"], congress: bill["congress"])
+
           if bill_instance.save
             bills_sponsored << bill_instance
             

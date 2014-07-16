@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140710234339) do
+ActiveRecord::Schema.define(version: 20140716160911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,12 +24,12 @@ ActiveRecord::Schema.define(version: 20140710234339) do
   end
 
   create_table "bills", force: true do |t|
-    t.string   "title"
+    t.text     "title"
     t.string   "issue"
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "official_title"
+    t.text     "official_title"
     t.string   "url"
     t.string   "bill_id"
     t.string   "congress"
