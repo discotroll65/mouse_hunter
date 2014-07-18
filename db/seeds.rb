@@ -13,25 +13,6 @@
 		politicians = parsed_response["results"]
 
 
-		Politician.destroy_all 
 
-		politicians.each do |politician|
-			Politician.create(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"], district: politician["district"], state: politician["state"], title: politician["title"], twitter_id: politician["twitter_id"], in_office: politician["in_office"], contact_form: politician["contact_form"], party: politician["party"], congress_cid: politician["crp_id"])
-		end
-
-
-		Donor.create(name: "Koch Brothers", industry: "sugar")
-		Donor.create(name: "Google", industry: "tech")
-		Donor.create(name: "Exxon", industry: "oil")
-		Donor.create(name: "Dropbox", industry: "tech")
-		Donor.create(name: "Facebook", industry: "tech")
-		Donor.create(name: "BP", industry: "oil")
-		Donor.create(name: "Kellogg", industry: "sugar")
-		Donor.create(name: "Amazon", industry: "consumer goods")
-		Donor.create(name: "Goldman Sachs", industry: "finance")
-
-
-
-
-
+		
 

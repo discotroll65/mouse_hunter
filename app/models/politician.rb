@@ -1,6 +1,5 @@
 class Politician < ActiveRecord::Base
   has_many :posts
-
   has_many :sponsorships
   has_many :pvotes
   has_many :influences
@@ -10,9 +9,7 @@ class Politician < ActiveRecord::Base
   has_many :donors, :through => :lobbies
   has_many :sponsored_bills, :through => :sponsorships, :source => :bill, :dependent => :destroy
   has_many :voted_bills, :through => :pvotes, :source => :bill
-  validates_uniqueness_of :congress_cid
-
-# Used to store comments 
+  validates_uniqueness_of :bioguide_id
 
   
   def self.get_politicians_by_zip(zip)
@@ -38,7 +35,7 @@ class Politician < ActiveRecord::Base
   # CHecks to see if the query input is an interger (meaning a zipcode)
 
   def self.is_i?(query)
-       !!(query =~ /\A[-+]?[0-9]+\z/)
+    !!(query =~ /\A(\s+)?[0-9]{5}([-][0-9]{4})?(\s+)?\z/)
   end
 
 # This is a hash of all the demo politicians and their assigned twitter_widget_id 
@@ -70,29 +67,20 @@ end
 
   #This goes over an array returned by the method "get_politicians_by_zip", which contains hashes of politicians, and then creates active records of them using various API pulls. It also generates all the bills a politician has sponsored. A validate uniqueness in the politician and bill models make sure that duplicates don't happen. Method returns an array of Active records.
     
-  def self.get_all_data_for_politicians(array_of_politician_hashes)
+  def get_all_data_for_politicians
     #initialize array to be returned
-    politician_active_records = []
+     
 
-    array_of_politician_hashes.each do |politician|
+    @queries = ["jobs", "health", "education", "security", "veterans", "immigration", "military", "unions", "taxes", "agriculture"]
+    #John Boehner was 2:42 with queries
+    # 8 seconds without queries
+    # @queries.each do |query|
+    #   self.get_ideology(query)
+    # end
 
-      politician_active_records << Politician.create(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"], district: politician["district"], state: politician["state"], title: politician["title"], twitter_id: politician["twitter_id"], in_office: politician["in_office"], contact_form: politician["contact_form"], party: politician["party"], congress_cid: politician["crp_id"], chamber: politician["chamber"], bioguide_id: politician["bioguide_id"])
-      #binding.pry
-      #Gets all the data for Politician record from NYT
-      Politician.last.get_info_from_NYT
-      Politician.last.get_campaign_finance
-      Politician.last.get_committee_info
-         @queries = ["jobs", "health", "education", "security", "veterans", "immigration", "military", "unions", "taxes", "agriculture"]
-        @ideologies = {}
-
-        @queries.each do |query|
-          # ideologies is a hash with a key that is the query and a valeu that is a hash (keys are bill ids and values are votes)
-          @ideologies[query] = Politician.last.get_ideology(query)
-          
-        end
-    end
-
-    politician_active_records
+    self.get_info_from_NYT
+    self.get_campaign_finance
+    self.get_committee_info
   end
 
   #instance method that updates that instance's info using api calls from the sunlight foundation and NYT apis
@@ -288,9 +276,6 @@ end
       " "
     end
   end
-
-
-  validates_uniqueness_of :congress_cid
 
 
   def get_committee_info
