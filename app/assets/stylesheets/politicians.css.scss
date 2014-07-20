@@ -93,6 +93,17 @@ nav {
 	}
 }
 
+h5 {
+	position:relative;
+	top:200px;
+}
+
+#fundamental_reform {
+			position:relative;
+			top:80px;
+			overflow: hidden;
+	}
+
 
 .sidebar {
 	background-color:#d8d6d6;
@@ -216,9 +227,9 @@ nav {
 
 	}
 
+	
 	#very_specific_id {
 			position:relative;
-			top:300px;
 			width:25vw;
 			left:40px;
 			overflow: hidden;
@@ -330,8 +341,6 @@ nav {
 		font-family:'Lato';
 		font-weight:300;
 		font-size:3em;
-		position:relative;
-		top:-200px;
 		padding: 20px 35px;
 		padding-left:15vw;
 		width:70vw;
@@ -347,7 +356,7 @@ nav {
 	.committees {
 		position:relative;
 		top:-345px;
-		left:300px;
+		left:369px;
 		width:40vw;
 
 		.committees_list {
@@ -427,14 +436,34 @@ nav {
 }
 
 
+.circle {
+		width:140px;
+		height:140px;
+		border-radius:100px;
+		background-color:#7CD2FC;
+		// margin-top: 20px;
+		// margin-left:20px;
+		float:right;
+		margin-right: 20px;
+
+		p {
+			font-family:'Lato';
+			font-weight:300;
+			text-align:center;
+			font-size:14px;
+			width: 120px;
+			position:relative;
+			top:50px;
+			left:10px;
+		}
+	}
 
 /* IDEOLOGY */
 
 #ideology_section {
 	width:70vw;
 	height:100vh;
-	position:relative;
-	top:200px;
+	
 	// border-bottom: 5px solid #44a5e1; 
 
 	h4 {
@@ -490,36 +519,13 @@ nav {
 		font-size:1.3em;
 	}
 
-	.circle {
-		width:140px;
-		height:140px;
-		border-radius:100px;
-		background-color:#7CD2FC;
-		// margin-top: 20px;
-		// margin-left:20px;
-		float:right;
-		margin-right: 20px;
-
-		p {
-			font-family:'Lato';
-			font-weight:300;
-			text-align:center;
-			font-size:14px;
-			width: 120px;
-			position:relative;
-			top:50px;
-			left:10px;
-		}
-	}
+	
 
 }
 
 
 #legislation_section {
 	background-color:lightblue;
-	position: relative;
-	top: 1600px;
-	height:300vh;
 	width:70vw;
 
 	h4 {
@@ -541,10 +547,10 @@ nav {
 			font-size:1.2em;
 			padding-top:25px;
 			position:relative;
-			top:40px;
-			left:50vw;
+			left:10vw;
 			margin-right:40px;
 			margin-bottom:40px;
+			display: inline-table;
 
 			#number_bills_sponsored {
 				font-size: 3em;

@@ -39,7 +39,9 @@
 	        fontName: "Lato",
 	        legend: {position:'none'},
 	        pieSliceTextStyle: {color:"white", fontName:"Open Sans"},
-	        chartArea: {left:20}
+	        chartArea: {left:20},
+	        'width':500,
+	        'height':500
 	    };
 
 	    // Instantiate and draw our chart, passing in some options.
@@ -56,7 +58,22 @@
 	<nav>
 		<ul class="header">
 			<li id="moto">Politicians talk a good game...<br><span class="tm">WHIT</span> lets you see concrete data.<br>No opinions or promises.</li>
-			<li class="logo">WHIT</li>
+			<li class="logo"><a href="/">WHIT</a></li>
+		</ul>
+		<section id="very_specific_id">
+			<div id="fb-root"></div>
+			<div id="fb-root"></div>
+			<script>(function(d, s, id) {
+			  var js, fjs = d.getElementsByTagName(s)[0];
+			  if (d.getElementById(id)) return;
+			  js = d.createElement(s); js.id = id;
+			  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+			  fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+			</script>
+			<div class="fb-like" data-href="http://localhost:3000/politicians/2/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true">
+			</div>
+		<section>
 
 	</nav>
 	<div class="sidebar">
@@ -71,14 +88,18 @@
 		<%= image_tag "http://theunitedstates.io/images/congress/450x550/#{@politician.bioguide_id}.jpg", id: "profile_picture" %>
 		<h3><%="#{@politician.party_finder}" + " from " + "#{@politician.state}" + "#{@politician.check_if_senator}"%></h3>
 		<h3 id="years"><%= "#{@politician.seniority} years in office" %></h3>
+		
+		<%if @politician.twitter_id != nil %> 
+			<div id="twitter_integration">
 
+				<a class="twitter-timeline" href=<%="https://twitter.com/#{@politician.twitter_id}"%> data-widget-id="490893472556003328" data-screen-name=<%="#{@politician.twitter_id}"%> > Tweets by <%="@#{@politician.twitter_id}"%></a>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>	
+				
+			</div>
 
-		<div id="twitter_integration">
-
-			<a class="twitter-timeline" href=<%="https://twitter.com/#{@politician.twitter_id}"%> data-widget-id="490893472556003328" data-screen-name=<%="#{@politician.twitter_id}"%> > Tweets by <%="@#{@politician.twitter_id}"%></a>
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>	
-			
-		</div>
+			<%else%>
+			<h1>Politician has no Twitter account.</h1>
+		<%end%>
 
 		<section id="comments">
 	
@@ -115,111 +136,8 @@
 			</div>
 		</section>
 
-		<section id="very_specific_id">
-			<div id="fb-root"></div>
-			<div id="fb-root"></div>
-			<script>(function(d, s, id) {
-			  var js, fjs = d.getElementsByTagName(s)[0];
-			  if (d.getElementById(id)) return;
-			  js = d.createElement(s); js.id = id;
-			  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
-			  fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));
-			</script>
-			<div class="fb-like" data-href="http://localhost:3000/politicians/2/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true">
-			</div>
-		<section>
-	</div>
-
-
-	<div class="general_info">
-		<a href="#fundraising_section">
-			<div class="fundraising_campaigns_icon">
-			<%= image_tag "fundraising_campaigns.png", id: "fundraising_campaigns_icon" %>
-			<p>FUNDRAISING</p>
-			</div>
-		</a>
-		<a href="#ideology_section">
-			<div class="ideology_icon">
-				<%= image_tag "hands.png", id: "ideology_icon" %>
-				<p>IDEOLOGY</p>
-			</div>
-		</a>
-		<a href="#legislation_section">
-			<div class="legislation_icon">
-				<%= image_tag "legislation.png", id: "legislation_icon" %>
-				<p>LEGISLATION</p>
-			</div>
-		</a>
-
-	</div>
-
-	<section id="fundraising_section">
-		<h4>Donors by industry</h4>
-		<div id="donutchart" style="width: 300px; height: 300px;"></div>
-		<div class="committees">
-			<h4> Serves on: </h4>
-			<ul class="committees_list">
-				<% @politician.committees.each do |committee| %>
-				
-					<%if committee.is_subcommittee == "true" %>
-						<li>
-							<%= "#{committee.name} " %> 
-						</li>
-					<%end%>	
-				<%end%>
-			</ul>
-		</div>
-		<p id="total_raised"><%="total raised: $#{@politician.money_raised}" %></p>
 		
-		<div class="warning">
-			<%= image_tag "exclamation.jpg", id:"beware"%>
-			<p>Beware of politicians having lots of donations from an industry while serving on an affiliated commmittee</p>
-		</div>
-		<h4 id="supporters"><%= "Interest groups that support #{@politician.name}"%></h4>
-		<div class="approval">
-			<div id="greenpeace"></div>
-			<div id="parenthood"></div>
-			<div id="peta"></div>
-			<div id="nea"></div>
-		</div>
-	</section>
-
-	<section id="ideology_section">
-		<h4>Recent votes by category</h4>
-		<table>
-			<tr>
-				<th>ISSUE</th>
-				<th>BILL</th>
-				<th>VOTE</th>
-			</tr>
-		
-			<% @ideologies.each do |issue, votes_hash| %>
-					<% votes_hash.each_with_index do |(bill_id, vote), index| %>
-						<tr>
-							<% if index == 0 %>
-
-								<td rowspan=<%= votes_hash.size %> class="<%=cycle("odd", "even")%>">
-									<%= issue %> 
-								</td>
-							<% end %>
-							<td><%= bill_id %></td>
-							<% if vote == "Yea"%>
-								<td ><%= image_tag "checkmark.jpg", id: "checkmark" %></td>
-							<% elsif vote == "Nay" %>
-								<td><%= image_tag "deny.jpg", id: "deny" %> </td>
-							<% else vote == "Not Voting" %>
-								<td><%= image_tag "exclamation.jpg", id: "exclamation" %> </td>
-							<% end %>
-						</tr>
-				<% end %>	
-			<% end %>	
-		</table>
-		<div  class="circle">
-			<p>Votes with the party <%= @politician.votes_with_party_pct %>% of the time</p>
-		</div>
-	</section>
-
+	</div>
 	<section id="legislation_section">
 		<h4><%="Bills Sponsored by #{@politician.name} that have become law" %> </h4>
 		<ul class="sponsored_bills_list">
@@ -245,7 +163,34 @@
 		<p>Years in Congress:<br><span id="number_bills_sponsored"><%= "#{@politician.seniority}" %></span></p>
 
 	</section>
+
+	<section id="fundraising_section">
+		<div  class="circle">
+			<p>Votes with the party <%= @politician.votes_with_party_pct %>% of the time</p>
+		</div>
+		<p id="total_raised"><%="total raised: $#{@politician.money_raised}" %></p>
+		<h4>Donors by industry</h4>
+		<div id="donutchart" style="width: 300px; height: 300px;"></div>
+		<div class="committees">
+			<h4> Serves on the following Committees: </h4>
+			<ol class="committees_list">
+				<% @politician.committees.each do |committee| %>
+				
+					<%if committee.is_subcommittee == "true" %>
+						<li>
+							<%= "#{committee.name} " %> 
+						</li>
+					<%end%>	
+				<%end%>
+			</ol>
+		</div>
+	</section>
+
+	<section id="fundamental_reform">
+		<h1>Has Committed to Fundamental Reform?</h1>
+		<iframe src=<%="http://reform.to/#/legislators/#{@politician.bioguide_id}"%> width=100% height=1000px ></iframe>
 		
 
-
+	</section>
+	<h5>Data courtesy of: Sunlight foundation, OpenSecrets.org, New York Times, Reform.to </h5>
 </body>
