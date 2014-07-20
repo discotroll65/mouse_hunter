@@ -78,9 +78,8 @@
 	</nav>
 	<div class="sidebar">
 		<ul class="iconography">
-			<li><%= link_to image_tag "facebook_icon.png", class: "facebook_icon", url:"http://facebook.com/#{@politician.facebook_account}" %></li>
-			<li><%= link_to image_tag "twitter_icon.png", class: "twitter_icon", url: "http://twitter.com#{@politician.twitter_id}" %></li>
-			<li><%= image_tag "phone_icon.png", class: "phone_icon" %></li>
+			<li><%= link_to image_tag("facebook_icon.png"), "http://facebook.com/#{@politician.facebook_account}" %></li>
+			<li><%= link_to image_tag("twitter_icon.png"), "http://twitter.com/#{@politician.twitter_id}" %></li>
 			<li><%= image_tag @politician.symbol, id: "party_icon" %></li>
 		</ul>
 
