@@ -1,6 +1,6 @@
 class Sponsorship < ActiveRecord::Base
 	belongs_to :politician
-	belongs_to :bill
+	belongs_to :bill, :dependent => :destroy
 
 	def self.get_sponsorship
 		# get help with API reading

@@ -4,78 +4,13 @@ class PoliticiansController < ApplicationController
 
 	def index
 
-		#check if query is a zipcode
-		if Politician.is_i?(params[:query])
-		  api_mode = "zip"
-		else
-			api_mode = "query"
-		end 
-
+		@query = params[:query]
 		
-		#assumes user entered a zipcode
-		if api_mode == "zip"
+		politicians_hash = Politician.get_politicians_hash(@query)
 
-			@zipcode = params[:query]
-		 
-			#Initialize what will be an array of active records
-			@politicians_zip = []
-
-
-			#after the user enters a zipcode,
-			#politicians_zip_hash is an array of Politician Hashes
-			politicians_zip_hash = Politician.get_politicians_by_zip(@zipcode)
-
-			
-			#Making an array of initialized Politician active records
-			politicians_zip_hash.each do |politician|
-				
-				@politicians_zip << Politician.new(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"], district: politician["district"], state: politician["state"], title: politician["title"], twitter_id: politician["twitter_id"], in_office: politician["in_office"], contact_form: politician["contact_form"], party: politician["party"], congress_cid: politician["crp_id"], chamber: politician["chamber"], bioguide_id: politician["bioguide_id"])
-			end
-
-			@politicians_zip.each_with_index do |politician, index|
-				
-				if !politician.save
-					@politicians_zip[index] = Politician.where(:bioguide_id => politician.bioguide_id)[0]
-				end
-			end
-
-
-			
-
-		else	
-				  #Data in the Politician table is currently populated/saved by running 'rake db:seed' in the terminal, which does an API call that hardwires in the reps from zipcode 12009##	
-			if params[:query].split.count == 2
-				@query = params[:query].split[1]
-			else
-				@query = params[:query]
-			end
-		 
-			#Initialize what will be an array of active records
-			@politicians_query = []
-
-
-			
-			#politicians_zip_ an array of Politician Hashes
-			politicians_query_hash = Politician.get_politicians_by_query(@query)
-
-			
-			#Making an array of initialized Politician active records
-			politicians_query_hash.each do |politician|
-				
-				@politicians_query << Politician.new(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"], district: politician["district"], state: politician["state"], title: politician["title"], twitter_id: politician["twitter_id"], in_office: politician["in_office"], contact_form: politician["contact_form"], party: politician["party"], congress_cid: politician["crp_id"], chamber: politician["chamber"], bioguide_id: politician["bioguide_id"])
-			end
-
-			@politicians_query.each_with_index do |politician, index|
-				
-				if !politician.save
-					@politicians_query[index] = Politician.where(:bioguide_id => politician.bioguide_id)[0]
-				end
-			end
-			
-
-		end	
-			#binding.pry
-
+		@politicians_array = Politician.make_politicians_in_db(politicians_hash)
+		
+		
 	end
 
 	def show

@@ -12,29 +12,48 @@ class Politician < ActiveRecord::Base
   validates_uniqueness_of :bioguide_id
 
   
-  def self.get_politicians_by_zip(zip)
-    #binding.pry
-    
-    response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators/locate?zip=#{zip}&apikey=#{ENV["SUNLIGHT_API"]}")
-    parsed_response = JSON.parse(response)
-    politicians = parsed_response["results"]
-    #binding.pry
-    politicians
+  def self.get_politicians_hash(query)
+    if Politician.is_zip?(query)
+      response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators/locate?zip=#{query}&apikey=#{ENV["SUNLIGHT_API"]}")
+      parsed_response = JSON.parse(response)
+      politicians = parsed_response["results"]
+      #binding.pry
+      politicians
+
+    else  
+      response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators?query=#{query}&apikey=#{ENV["SUNLIGHT_API"]}")
+      parsed_response = JSON.parse(response)
+      politicians = parsed_response["results"]
+      #binding.pry
+      politicians
+    end
+
   end
 
-  def self.get_politicians_by_query(query)
-    #binding.pry
-    
-    response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators?query=#{query}&apikey=#{ENV["SUNLIGHT_API"]}")
-    parsed_response = JSON.parse(response)
-    politicians = parsed_response["results"]
-    #binding.pry
-    politicians
+  def self.make_politicians_in_db(politicians_hash)
+    #initializes what will be an array of instantiated politican records
+    politicians_array = []
+
+      
+    #Making an array of initialized Politician active records
+    politicians_hash.each do |politician|
+      
+      politicians_array << Politician.new(name: (politician["first_name"] + " " + politician["last_name"]), first_name: politician["first_name"], last_name: politician["last_name"], district: politician["district"], state: politician["state"], title: politician["title"], twitter_id: politician["twitter_id"], in_office: politician["in_office"], contact_form: politician["contact_form"], party: politician["party"], congress_cid: politician["crp_id"], chamber: politician["chamber"], bioguide_id: politician["bioguide_id"])
+    end
+
+    #saves array in db, if already exists, grabs that one in array
+    politicians_array.each_with_index do |politician, index|
+      
+      if !politician.save
+        politicians_array[index] = Politician.where(:bioguide_id => politician.bioguide_id)[0]
+      end
+    end
+    politicians_array
   end
 
   # CHecks to see if the query input is an interger (meaning a zipcode)
 
-  def self.is_i?(query)
+  def self.is_zip?(query)
     !!(query =~ /\A(\s+)?[0-9]{5}([-][0-9]{4})?(\s+)?\z/)
   end
 

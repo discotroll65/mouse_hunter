@@ -7,42 +7,14 @@
 <div class="display_politicians">
 
 	<ul class="list_of_local">
-		<% if @query == nil %>
-			<% @politicians_zip.each do |politician| %>
-			
-				<li class="link">
-				<!-- can make this faster later with Politician.where(:last_name => Politician.get_politicians(12009)[0]["last_name"]) -->
+		
+		<% @politicians_array.each do |politician| %>
+		
+			<li class="link">
 
-					<% unless politician.id == nil %>
-						<%= link_to "#{politician.name} (#{politician.party})", politician_path(politician.id) %>
-						<% else %>
-					
-						<%= link_to "#{politician.name} (#{politician.party})", politician_path(Politician.where(:name => politician.name)[0].id) %>
-					<% end %>
-	
-				</li>
-			
-			<% end %>
-
-		<% elsif %>
-
-			<% @politicians_query.each do |politician| %>
-			
-				<li class="link">
-				<!-- can make this faster later with Politician.where(:last_name => Politician.get_politicians(12009)[0]["last_name"]) -->
-
-					<% unless politician.id == nil %>
-						<%= link_to "#{politician.name} (#{politician.party})", politician_path(politician.id) %>
-						<% else %>
-					
-						<%= link_to "#{politician.name} (#{politician.party})", politician_path(Politician.where(:name => politician.name)[0].id) %>
-
-					<% end %>
-
-				</li>
-			
-			<% end %>
-		<% end %>	
+				<%= link_to "#{politician.name} (#{politician.party})", politician_path(politician.id) %>
+			</li>
+		<% end %>
 
 	</ul>
 
