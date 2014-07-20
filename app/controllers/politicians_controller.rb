@@ -10,7 +10,7 @@ class PoliticiansController < ApplicationController
 
 		@politicians_array = Politician.make_politicians_in_db(politicians_hash)
 		
-		
+
 	end
 
 	def show
@@ -50,30 +50,21 @@ class PoliticiansController < ApplicationController
 
 		end
 	
-	
-		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
-		@counts = Donor.distinct.group(:industry).count
-
-		# @donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20]):title => @title, :labels => @legend, :data => @data, :size => '400x200'
-		
-		@donors_bar_graph = Gchart.pie(:data => [0, 40, 10, 70, 20])
-		@counts = Donor.distinct.group(:industry).count
-
 
 		#get an array of the industries and what they gave
 		@counts = @politician.influences.map do |influence|
-			[influence.lobby.industry_name, influence.money_given.to_i]
+			[influence.lobby.industry_name, influence.money_given.to_f]
 		end
 		
 		#initialize variable that is the sum of all the money top industries donated
 		top_industry_total_given = 0
 		
 		@counts.each do |count|
-			top_industry_total_given += count[1].to_i
+			top_industry_total_given += count[1].to_f
 		end
 	
-		# other_sources = @politician.money_raised - top_industry_total_given
-		# @counts << ["Other sources", other_sources]
+		 other_sources = @politician.money_raised - top_industry_total_given
+		 @counts << ["Other sources", other_sources]
 		
 
 		@counts = @counts.to_h

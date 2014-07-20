@@ -11,8 +11,12 @@
 		<% @politicians_array.each do |politician| %>
 		
 			<li class="link">
+				<% if politician.chamber == "house" %>
+					<%= link_to "#{politician.name}, Representative from #{politician.state}'s District #{politician.district}, (#{politician.party})", politician_path(politician.id) %>
 
-				<%= link_to "#{politician.name} (#{politician.party})", politician_path(politician.id) %>
+				<% else%>
+					<%= link_to "#{politician.name}, Senator from #{politician.state}, (#{politician.party})", politician_path(politician.id) %>
+				<%end%>
 			</li>
 		<% end %>
 

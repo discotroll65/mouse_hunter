@@ -21,6 +21,10 @@ class Politician < ActiveRecord::Base
       politicians
 
     else  
+      if query.split.count > 1
+        query = query.split[1]
+      end
+
       response = RestClient.get("http://congress.api.sunlightfoundation.com/legislators?query=#{query}&apikey=#{ENV["SUNLIGHT_API"]}")
       parsed_response = JSON.parse(response)
       politicians = parsed_response["results"]
@@ -104,29 +108,6 @@ end
 
   #instance method that updates that instance's info using api calls from the sunlight foundation and NYT apis
   def get_info_from_NYT
-    #binding.pry
-
-    response = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.chamber}/#{self.state}/#{self.district}/current.json?api-key=#{ENV["NYT_API"]}")
-    
-    #Handles case where Congress person is from House or Senate
-    if self.chamber == "house"
-      parsed_response = JSON.parse(response)["results"][0]
-    else
-      #if Person is in the senate, will have an array of 2 senators. Check the last name of the person for each one
-      @senator_index= nil
-
-
-      JSON.parse(response)["results"].each_with_index do |senator, index|
-        if self.last_name == senator["name"].split.last
-          @senator_index = index
-        end
-      end
-
-      parsed_response = JSON.parse(response)["results"][@senator_index]
-    end   
-
-    #assigns next election date
-    self.update_attributes(next_election: parsed_response["next_election"])
 
     detailed_info = RestClient.get("http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/#{self.bioguide_id}.json?api-key=#{ENV["NYT_API"]}")
     parsed_detailed_info = JSON.parse(detailed_info)

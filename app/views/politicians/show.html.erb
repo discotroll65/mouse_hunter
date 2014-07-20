@@ -74,12 +74,10 @@
 
 
 		<div id="twitter_integration">
-		
-			<a class="twitter-timeline" href="https://twitter.com/hashtag/#{@politician.twitter_id}" data-widget-id=<%= "#{ @politician_twitter_hash[@politician.name] }" %>  >
-				#{barbaraboxer} Tweets
-			</a>
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-			</script>
+
+			<a class="twitter-timeline" href=<%="https://twitter.com/#{@politician.twitter_id}"%> data-widget-id="490893472556003328" data-screen-name=<%="#{@politician.twitter_id}"%> > Tweets by <%="@#{@politician.twitter_id}"%></a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>	
+			
 		</div>
 
 		<section id="comments">
