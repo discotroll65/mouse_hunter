@@ -312,16 +312,18 @@ end
 
 
   def get_campaign_finance
-    campaign_entered = "2012"
+    campaign_entered = Time.now.year.to_s
     #API to get summary of how much the politician raised last cycle
+
   
-    response = RestClient.get("http://www.opensecrets.org/api/?method=candSummary&cid=#{self.congress_cid}&cycle=2012&apikey=#{ENV["OPENSECRETS_API"]}&output=json")
+    response = RestClient.get("http://www.opensecrets.org/api/?method=candSummary&cid=#{self.congress_cid}&cycle=#{campaign_entered}&apikey=#{ENV["OPENSECRETS_API"]}&output=json")
 
     parsed_response = JSON.parse(response)
 
     #gets the amount of money the candidate raised last election
     total_money_raised = parsed_response["response"]["summary"]["@attributes"]["total"]
-    self.update_attributes(money_raised: total_money_raised)
+    next_race = parsed_response["response"]["summary"]["@attributes"]["next_election"]
+    self.update_attributes(money_raised: total_money_raised, next_election: next_race)
 
 
     #API to get top industries contributing to a politician
