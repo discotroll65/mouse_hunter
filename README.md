@@ -11,7 +11,11 @@ To get this project up and running, you need to subscribe for three API keys, an
 3.) New York Times (get a key for the congress api) : https://myaccount.nytimes.com/auth/login?URI=http:/developer.nytimes.com/login/external
 
 Once you have the keys, add the following environment variables to your .bashrc (for linux) or your .bash_profile (for mac) file, in your home directory:
+(obviously, with the keys in the quotes...and no space on either side of the equals sign!)
 
-export SUNLIGHT_API='<key>'
-export NYT_API='<key>'
-export OPENSECRETS_API='<key>'
+export SUNLIGHT_API=''
+
+export NYT_API=''
+
+export OPENSECRETS_API=''
+
