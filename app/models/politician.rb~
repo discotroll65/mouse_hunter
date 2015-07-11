@@ -53,7 +53,7 @@ class Politician < ActiveRecord::Base
     politicians_array
   end
 
-  # Checks to see if the query input is an interger (meaning a zipcode)
+  # CHecks to see if the query input is an interger (meaning a zipcode)
 
   def self.is_zip?(query)
     !!(query =~ /\A(\s+)?[0-9]{5}([-][0-9]{4})?(\s+)?\z/)
@@ -61,7 +61,22 @@ class Politician < ActiveRecord::Base
 
 # This is a hash of all the demo politicians and their assigned twitter_widget_id 
 
- 
+def self.twitter_widget_id
+    politicians = {
+      "Brad Sherman" => "486908157516476417",
+      "Barbara Boxer" => "486825057671335937", 
+      "Diane Feinstein" => "486908613877719041",
+      "Patrick Toomey" => "486909225101037568",
+      "Allyson Schwartz" => "486933279988129793",
+      "Chaka Fattah" => "486937089607348224",
+      "Robert Casey" => "486937489819435009",
+      "Patrick Meehan" => "487532918676279297"
+
+    }
+
+
+end
+
 def get_twitter_id(politician_twitter_hash, politician)
   politician_twitter_hash.each do |name, data_widget_id| 
       name = politician.name 
@@ -78,7 +93,12 @@ end
      
 
     @queries = ["jobs", "health", "education", "security", "veterans", "immigration", "military", "unions", "taxes", "agriculture"]
-    
+    #John Boehner was 2:42 with queries
+    # 8 seconds without queries
+    # @queries.each do |query|
+    #   self.get_ideology(query)
+    # end
+
     self.get_info_from_NYT
     self.get_campaign_finance
     self.get_committee_info
@@ -312,7 +332,7 @@ end
         self.lobbies << Lobby.where(:industry_code => lobby_instance.industry_code)
         Influence.last.update_attributes(:campaign_cycle => campaign_entered, :money_given => industry["@attributes"]["total"])
       end
-
+        #add later --description: "URL for description: #{bill["urls"]["govtrack"]}"
     end
   end
 

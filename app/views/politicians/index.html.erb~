@@ -1,0 +1,34 @@
+
+<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic|Open+Sans:300italic,400italic,400,300,600|Raleway:400,100,200,300,500,600,700' rel='stylesheet' type='text/css'>
+
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,300italic,400italic,500' rel='stylesheet' type='text/css'>
+
+
+<div class="display_politicians">
+
+	<ul class="list_of_local">
+		
+		<% @politicians_array.each do |politician| %>
+		
+			<li class="link">
+				<% if politician.chamber == "house" %>
+					<%= link_to "#{politician.name}, Representative from #{politician.state}'s District #{politician.district}, (#{politician.party})", politician_path(politician.id), :onclick => 'document.getElementById("loadingGif").style.display = "block";'%>
+
+				<% else%>
+					<%= link_to "#{politician.name}, Senator from #{politician.state}, (#{politician.party})", politician_path(politician.id), :onclick => 'document.getElementById("loadingGif").style.display = "block";' %>
+				<%end%>
+			</li>
+		<% end %>
+				<li> <%=image_tag("ajax-loader.gif", style:"display:none", id:"loadingGif")%> </li>
+			
+	</ul>
+
+	<h1>These are your searched for representatives in Congress</h1>
+
+	
+
+</div>
+
+
+
+
